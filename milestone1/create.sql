@@ -34,5 +34,39 @@ CREATE TABLE UserJoinsProject
 (user_email VARCHAR(256) NOT NULL REFERENCES Users(email),
  creator_email VARCHAR(256) NOT NULL,
  project_name VARCHAR(256) NOT NULL,
+ PRIMARY KEY(user_email, creator_email, project_name),
  FOREIGN KEY (creator_email, project_name) REFERENCES Projects(creator_email, project_name)
  );
+
+CREATE FUNCTION TF_Capacity_Update() RETURNS TRIGGER AS $$
+BEGIN
+    IF EXISTS(SELECT * FROM Projects WHERE NEW.project_name = Projects.project_name AND NEW.creator_email = Projects.creator_email AND Projects.curr_capacity = Projects.goal_capacity) THEN
+        RAISE EXCEPTION 'project is at max capacity';
+    END IF;
+
+    UPDATE Projects SET curr_capacity = curr_capacity + 1
+    WHERE NEW.project_name = Projects.project_name AND NEW.creator_email = Projects.creator_email;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER TG_Capacity_Update
+  AFTER INSERT OR UPDATE ON UserJoinsProject
+  FOR EACH ROW
+  EXECUTE PROCEDURE TF_Capacity_Update();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

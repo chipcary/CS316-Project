@@ -8,6 +8,7 @@ WITH available_projects AS(
 	AND UserTimeSlots.day_of_the_week = p1.day_of_the_week
 	AND UserTimeSlots.start_time <= p1.start_time
 	AND UserTimeSlots.end_time >= p1.end_time
+	AND p1.curr_capacity < p1.goal_capacity
 	EXCEPT(
 		SELECT project_name, creator_email FROM UserJoinsProject
 		WHERE user_email = 'bhc17@duke.edu'
