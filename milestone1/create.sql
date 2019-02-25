@@ -17,7 +17,7 @@ CREATE TABLE UserTimeSlots
  end_time INTEGER NOT NULL CHECK(end_time >= 0 AND end_time < 24));
 
 CREATE TABLE Projects
-(creator_email VARCHAR(256) NOT NULL,
+(creator_email VARCHAR(256) NOT NULL REFERENCES Users(email),
  project_name VARCHAR(256) NOT NULL,
  tag VARCHAR(256) NOT NULL,
  project_date DATE NOT NULL,
@@ -26,6 +26,8 @@ CREATE TABLE Projects
  end_time INTEGER NOT NULL CHECK(end_time >= 0 AND end_time < 24),
  curr_capacity INTEGER NOT NULL CHECK(curr_capacity <= goal_capacity),
  goal_capacity INTEGER NOT NULL,
+ city VARCHAR(256) NOT NULL,
+ state VARCHAR(256) NOT NULL,
  PRIMARY KEY(creator_email, project_name));
 
 CREATE TABLE UserJoinsProject
