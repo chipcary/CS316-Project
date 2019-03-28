@@ -1,18 +1,21 @@
 //barebones implementation of app.js
 
-var express = require('express');
-var app = express();
-//TODO: port should probably be specified in a config file
-var port = 1000;
-//just hello world for now
-app.get('/', (req, res) => res.send('Hello World!'));
+const express = require('express');
+const logger = require('morgan');
+const bodyParser = require('body-parser');
 
-//TODO: setup db (I like sequelize so far as an ORM)
+const app = express();
+
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+
 
 //setup routing for the future
 var projectRouter = require('./src/routes/project');
-var userRouter = require('./src/routes/user')
-app.use('/project', projectRouter);
-app.use('/user', userRouter);
+var userRouter = require('./src/routes/user');
 
-app.listen(port, () => console.log(`started server on port ${port}`));
+app.use('/api/projects', projectRouter);
+app.use('/api/users', userRouter);
+
+module.exports = app;

@@ -7,7 +7,8 @@ INSERT INTO UserInterests VALUES
 	('blah', 'a', 'b', 'c');
 
 INSERT INTO UserTimeSlots VALUES
-	('bhc17@duke.edu', 'monday', 10, 12);
+	('bhc17@duke.edu', 'monday', 10, 12),
+	('bhc17@duke.edu', 'tuesday', 10, 12);
 
 INSERT INTO Projects VALUES
 	('blah', 'test1', 'i1', TO_DATE('17/12/2018', 'DD/MM/YYYY'), 'monday', 10, 12, 0, 1, 'DURHAM', 'NC'),
@@ -19,4 +20,5 @@ INSERT INTO Projects VALUES
 
 INSERT INTO UserJoinsProject VALUES
 	('blah', 'blah', 'test1'),
+	('blah', 'bhc17@duke.edu', 'exclude'),
 	('bhc17@duke.edu', 'bhc17@duke.edu', 'exclude');
