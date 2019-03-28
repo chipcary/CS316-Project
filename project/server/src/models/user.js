@@ -21,6 +21,8 @@ module.exports = (sequelize, DataTypes) => {
     User.hasMany(models.Project, {foreignKey: 'creator_email'});
   };
 
+  //get top projects by tag in your time that fit in your schedule
+  //callback is used to keep it async
   User.getRecProjects =  function(email, res){
         sequelize.query(`WITH available_projects AS(
   SELECT p1.project_name, p1.creator_email

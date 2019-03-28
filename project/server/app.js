@@ -6,12 +6,13 @@ const bodyParser = require('body-parser');
 
 const app = express();
 
+//setup logging and url parsing
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 
-//setup routing for the future
+//setup routing
 var projectRouter = require('./src/routes/project');
 var userRouter = require('./src/routes/user');
 
