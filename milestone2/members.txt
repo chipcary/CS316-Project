@@ -1,0 +1,11 @@
+Chip Cary
+- Created backend API 
+
+Anna Hoover
+- Gathered sample data
+
+Niyaz Nurbhasha
+- Gathered sample data
+
+Belal Taher
+Since the last milestone, I've worked primarily on the front end. I wireframed how I believe the end product will look and started creating general components to implement it.
