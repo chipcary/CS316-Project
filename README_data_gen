@@ -1,0 +1,8 @@
+Using generatedata.org, we created two datasets: a dataset for the users in our database, which included variables like the user's email,
+their name, they city and state where they live, a time slot during the day when they're available to volunteer, how long they can
+volunteer for a particular job, the date they can volunteer, and then three variables where the users rank their top 3 interests. This 
+dataset had 5000 unique rows, which were created using generatedata's algorithm, in addition to specifying the parameters ourselves for 
+certain variables. We created the project dataset in similar fashion, and its variabls include the project creator's email, the city and 
+state where they're from, they time slot the project work starts, how long volunteers are needed for, the data of the project, a tag that 
+describes the basic idea of the project, a current capacity variable indicating how many volunteers have signed, and finally, a goal 
+capacity variable for the maximum amount of volunteers necessary for a certain project. The project dataset has 1000 unique rows. 
