@@ -5,7 +5,7 @@ Anna Hoover
 - Gathered sample data
 
 Niyaz Nurbhasha
-- Gathered sample data
+- Used random data generator to produce relevant data for Users and Project. Refined parameters of variables from Milestone 1.
 
 Belal Taher
 Since the last milestone, I've worked primarily on the front end. I wireframed how I believe the end product will look and started creating general components to implement it.
