@@ -67,7 +67,7 @@ projectRouter.route('/:creator_email&:project_name/add_user/:user_email').post((
 });
 
 //remove user from project
-projectRouter.route('/:creator_email&:project_name/destroy/:user_email').get((req, res) => {
+projectRouter.route('/:creator_email&:project_name/:user_email').delete((req, res) => {
 	UserJoinsProject.destroy({
 		where: {
 			user_email: req.params.user_email,
@@ -140,7 +140,7 @@ projectRouter.route('/:creator_email&:project_name&:tag&:project_date&:day_of_th
 });
 
 //delete project
-projectRouter.route('/destroy/:creator_email&:project_name').get((req, res) => {
+projectRouter.route('/:creator_email&:project_name').delete((req, res) => {
 	Project.destroy({
 		where: {
 			creator_email: req.params.creator_email,

@@ -73,7 +73,7 @@ userRouter.route('/:email/:name&:city&:state').put((req, res) => {
 });
 
 //delete a user
-userRouter.route('/destroy/:email').get((req, res) => {
+userRouter.route('/:email').delete((req, res) => {
 	var email = req.params.email;
 	User.destroy({
 		where: {
@@ -140,7 +140,7 @@ userRouter.route('/:email/timeslots/:dotw&:start_time&:end_time').post((req, res
 });
 
 //delete timeslot
-userRouter.route('/:email/timeslots/destroy/:dotw&:start_time&:end_time').get((req, res) => {
+userRouter.route('/:email/timeslots/:dotw&:start_time&:end_time').delete((req, res) => {
 	var values ={
 		email: req.params.email,
 		day_of_the_week: req.params.dotw,
