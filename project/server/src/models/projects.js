@@ -1,14 +1,12 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const Project = sequelize.define('Project', {
-    creator_email: {
-    	type: DataTypes.STRING,
-    	primaryKey: true
+    pid: {
+      type: DataTypes.INTEGER,
+      primaryKey: true
     },
-    project_name: {
-    	type: DataTypes.STRING,
-    	primaryKey:true
-    },
+    creator_email: DataTypes.STRING,
+    project_name: DataTypes.STRING,
     tag: DataTypes.STRING,
     project_date: DataTypes.DATE,
     day_of_the_week: DataTypes.STRING,

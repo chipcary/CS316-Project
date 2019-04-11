@@ -4,6 +4,10 @@ CREATE TABLE Users
  city VARCHAR(256) NOT NULL,
  state VARCHAR(256) NOT NULL);
 
+CREATE TABLE UserCreds
+(email VARCHAR(256) NOT NULL PRIMARY KEY REFERENCES Users(email) ON DELETE CASCADE,
+ hash BYTEA NOT NULL);
+
 CREATE TABLE UserInterests
 (email VARCHAR(256) NOT NULL PRIMARY KEY REFERENCES Users(email) ON DELETE CASCADE,
  interest1 VARCHAR(256),
@@ -17,7 +21,8 @@ CREATE TABLE UserTimeSlots
  end_time INTEGER NOT NULL CHECK(end_time >= 0 AND end_time < 24));
 
 CREATE TABLE Projects
-(creator_email VARCHAR(256) NOT NULL REFERENCES Users(email) ON DELETE CASCADE,
+(pid SERIAL PRIMARY KEY,
+ creator_email VARCHAR(256) NOT NULL REFERENCES Users(email) ON DELETE CASCADE,
  project_name VARCHAR(256) NOT NULL,
  tag VARCHAR(256) NOT NULL,
  project_date DATE NOT NULL,
@@ -27,25 +32,23 @@ CREATE TABLE Projects
  curr_capacity INTEGER NOT NULL CHECK(curr_capacity <= goal_capacity),
  goal_capacity INTEGER NOT NULL,
  city VARCHAR(256) NOT NULL,
- state VARCHAR(256) NOT NULL,
- PRIMARY KEY(creator_email, project_name));
+ state VARCHAR(256) NOT NULL
+ );
 
 CREATE TABLE UserJoinsProject
 (user_email VARCHAR(256) NOT NULL REFERENCES Users(email) ON DELETE CASCADE,
- creator_email VARCHAR(256) NOT NULL,
- project_name VARCHAR(256) NOT NULL,
- PRIMARY KEY(user_email, creator_email, project_name),
- FOREIGN KEY (creator_email, project_name) REFERENCES Projects(creator_email, project_name) ON DELETE CASCADE
+ pid INTEGER NOT NULL REFERENCES Projects(pid) ON DELETE CASCADE,
+ PRIMARY KEY(user_email, pid)
  );
 
 CREATE FUNCTION TF_Capacity_Update() RETURNS TRIGGER AS $$
 BEGIN
-    IF EXISTS(SELECT * FROM Projects WHERE NEW.project_name = Projects.project_name AND NEW.creator_email = Projects.creator_email AND Projects.curr_capacity = Projects.goal_capacity) THEN
+    IF EXISTS(SELECT * FROM Projects WHERE NEW.pid = Projects.pid AND Projects.curr_capacity = Projects.goal_capacity) THEN
         RAISE EXCEPTION 'project is at max capacity';
     END IF;
 
     UPDATE Projects SET curr_capacity = curr_capacity + 1
-    WHERE NEW.project_name = Projects.project_name AND NEW.creator_email = Projects.creator_email;
+    WHERE NEW.pid = Projects.pid;
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
@@ -58,7 +61,7 @@ CREATE TRIGGER TG_Capacity_Update
 CREATE FUNCTION TF_Capacity_Decrement() RETURNS TRIGGER AS $$
 BEGIN
     UPDATE Projects SET curr_capacity = curr_capacity - 1
-    WHERE OLD.project_name = Projects.project_name AND OLD.creator_email = Projects.creator_email;
+    WHERE OLD.pid = Projects.pid;
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;

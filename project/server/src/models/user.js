@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   });
   User.associate = function(models) {
     User.hasOne(models.UserInterests, {foreignKey: 'email'});
+    User.hasOne(models.UserCreds, {foreignKey: 'email'});
     User.hasMany(models.UserTimeSlots, {foreignKey: 'email'});
     User.hasMany(models.UserJoinsProject, {foreignKey: 'user_email'});
     User.hasMany(models.Project, {foreignKey: 'creator_email'});
