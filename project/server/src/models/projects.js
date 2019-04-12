@@ -19,6 +19,11 @@ module.exports = (sequelize, DataTypes) => {
   }, {
   	freezeTableName: true,
     tableName: 'projects',
+    scopes: {
+      create: {
+        attributes: {exclude: ['pid']}
+      }
+    }
   });
   Project.associate = function(models) {
     Project.belongsTo(models.User, {foreignKey: 'creator_email'});

@@ -10,7 +10,7 @@ const app = require('../app')
 
 describe('Unit testing the /users route', function() {
 	
-    it('should return get user info', function() {
+    it('should get user info', function() {
       return request(app)
         .get('/api/users/bhc17@duke.edu')
         .then(function(response){
@@ -18,6 +18,14 @@ describe('Unit testing the /users route', function() {
             data = response.body[0];
             assert.equal(data["name"], "Chip");
         });
+    });
+
+    it('should create a user', function(){
+
+    });
+
+    it('should update user info', function(){
+
     });
 
     it('should delete a user', function() {
@@ -32,5 +40,27 @@ describe('Unit testing the /users route', function() {
         	});
         });
     });
+
+    it('should validate user creds', function(){
+
+    });
+
+    it('should update user creds', function(){
+
+    });
+
+    it('should update user interests', function(){
+
+    });
+
+    it('should add timeslots for a user', function(){
+
+    });
+
+    it('should delete timeslots for a user', function(){
+
+    });
+
+
 
 });

@@ -27,7 +27,7 @@ userRouter.route('/login/:email&:password').get((req, res) => {
 		  if(match) {
 		  	res.send(true);
 		  } else {
-		  	res.send(false);
+		  	res.status(403).send(false);
 		  } 
 		});
 	})
@@ -35,18 +35,38 @@ userRouter.route('/login/:email&:password').get((req, res) => {
 		res.send(error);
 	});
 });
-//set user password
+//set or update user password
 userRouter.route('/login/:email&:password').put((req, res) => {
+	//bcrypt automatically salts and hashes passwords
+	//done async bc hashing takes a lot of CPU
 	bcrypt.hash(req.params.password, 10, function(err, hash){
-		UserCreds.create({
-			email: req.params.email,
-			hash: hash
-		})
-		.then(email => {
-			res.send("password successfully changed");
+		UserCreds.findByPk(req.params.email)
+		.then(user => {
+			if(!user){
+				UserCreds.create({
+					email: req.params.email,
+					hash: hash
+				})
+				.then(task =>{
+					res.status(200).send("password entry created for user: " + req.params.email);
+				})
+				.catch(task =>{
+					res.status(500).send(task);
+				});
+			}
+			else{
+				user.hash = hash;
+				user.save()
+				.then(task =>{
+					res.status(200).send("password updated for user: " + req.params.email);
+				})
+				.catch(task =>{
+					res.status(500).send(task);
+				});
+			}
 		})
 		.catch(error => {
-			res.send(error);
+			res.status(500).send(error);
 		});
 	});
 });
@@ -68,7 +88,6 @@ userRouter.route('/:email').get((req, res) => {
 });
 
 //create a new user
-//TODO: hash and store password
 userRouter.route('/:email&:name&:city&:state').post((req, res) => {
 	console.log(req.params);
 	User.create({
