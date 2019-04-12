@@ -2,7 +2,7 @@
 module.exports = (sequelize, DataTypes) => {
   const Project = sequelize.define('Project', {
     pid: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       primaryKey: true
     },
     creator_email: DataTypes.STRING,
@@ -15,15 +15,11 @@ module.exports = (sequelize, DataTypes) => {
     curr_capacity: DataTypes.INTEGER,
     goal_capacity: DataTypes.INTEGER,
     city: DataTypes.STRING,
-    state: DataTypes.STRING
+    state: DataTypes.STRING,
+    description: DataTypes.STRING
   }, {
   	freezeTableName: true,
     tableName: 'projects',
-    scopes: {
-      create: {
-        attributes: {exclude: ['pid']}
-      }
-    }
   });
   Project.associate = function(models) {
     Project.belongsTo(models.User, {foreignKey: 'creator_email'});

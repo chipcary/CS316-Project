@@ -32,7 +32,8 @@ CREATE TABLE Projects
  curr_capacity INTEGER NOT NULL CHECK(curr_capacity <= goal_capacity),
  goal_capacity INTEGER NOT NULL,
  city VARCHAR(256) NOT NULL,
- state VARCHAR(256) NOT NULL
+ state VARCHAR(256) NOT NULL,
+ description VARCHAR(256)
  );
 
 CREATE TABLE UserJoinsProject
