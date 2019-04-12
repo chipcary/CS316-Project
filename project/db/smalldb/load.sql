@@ -3,8 +3,8 @@ INSERT INTO Users VALUES
 	('blah', 'a', 'b', 'c');
 
 INSERT INTO UserCreds VALUES
-	('bhc17@duke.edu', 100),
-	('blah', 200);
+	('bhc17@duke.edu', "100"),
+	('blah', "200");
 
 INSERT INTO UserInterests VALUES
 	('bhc17@duke.edu', 'i1', 'i2', 'i3'),

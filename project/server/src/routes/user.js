@@ -5,6 +5,9 @@ const User = require('../models').User;
 const UserInterests = require('../models').UserInterests;
 const UserTimeSlots = require('../models').UserTimeSlots;
 const UserJoinsProject = require('../models').UserJoinsProject;
+const UserCreds = require('../models').UserCreds;
+
+var bcrypt = require('bcrypt');
 
 //get all users. for testing only
 userRouter.route('/').get((req, res) => {
@@ -14,6 +17,37 @@ userRouter.route('/').get((req, res) => {
 	})
 	.catch(error => {
 		res.send(error);
+	});
+});
+//validate user password
+userRouter.route('/login/:email&:password').get((req, res) => {
+	UserCreds.findByPk(req.params.email)
+	.then(creds => {
+		bcrypt.compare(req.params.password, creds.hash, function(err, match) {
+		  if(match) {
+		  	res.send(true);
+		  } else {
+		  	res.send(false);
+		  } 
+		});
+	})
+	.catch(error => {
+		res.send(error);
+	});
+});
+//set user password
+userRouter.route('/login/:email&:password').put((req, res) => {
+	bcrypt.hash(req.params.password, 10, function(err, hash){
+		UserCreds.create({
+			email: req.params.email,
+			hash: hash
+		})
+		.then(email => {
+			res.send("password successfully changed");
+		})
+		.catch(error => {
+			res.send(error);
+		});
 	});
 });
 //get attributes associated with a user

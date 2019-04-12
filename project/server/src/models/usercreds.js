@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       primaryKey: true
     },
-    hash: DataTypes.BLOB
+    hash: DataTypes.STRING
   }, {
     freezeTableName: true,
     tableName: 'usercreds',
