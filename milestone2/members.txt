@@ -1,11 +1,8 @@
 Chip Cary
-- Created backend API 
+Created the schema for our relational database. Also created the back end API for the front end to interface with the PSQL database. Did a lot of the planning regarding how the entire project will look at a high level.
 
-Anna Hoover
-- Gathered sample data
-
-Niyaz Nurbhasha
-- Gathered sample data
+Anna Hoover & Niyaz Nurbhasha
+Used scripts to gather test data for when we fully integrate the front end and the back end. Gave the rest of the group a lot of input regarding how we will take actual data and input it into our database.
 
 Belal Taher
 Since the last milestone, I've worked primarily on the front end. I wireframed how I believe the end product will look and started creating general components to implement it.
