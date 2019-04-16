@@ -6,14 +6,17 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       primaryKey: true
     },
-    creator_email: DataTypes.STRING,
-    project_name: DataTypes.STRING
+    pid: {
+      type: DataTypes.INTEGER,
+      primaryKey: true
+    }
   }, {
   	freezeTableName: true,
     tableName: 'userjoinsproject',
   });
   UserJoinsProject.associate = function(models) {
     UserJoinsProject.belongsTo(models.User, {foreignKey: 'user_email'});
+    UserJoinsProject.belongsTo(models.Project, {foreignKey: 'pid'});
 
   };
   return UserJoinsProject;

@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   });
   User.associate = function(models) {
     User.hasOne(models.UserInterests, {foreignKey: 'email'});
+    User.hasOne(models.UserCreds, {foreignKey: 'email'});
     User.hasMany(models.UserTimeSlots, {foreignKey: 'email'});
     User.hasMany(models.UserJoinsProject, {foreignKey: 'user_email'});
     User.hasMany(models.Project, {foreignKey: 'creator_email'});
@@ -25,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
   //callback is used to keep it async
   User.getRecProjects =  function(email, res){
         sequelize.query(`WITH available_projects AS(
-  SELECT p1.project_name, p1.creator_email
+  SELECT p1.pid
   FROM Users, UserInterests, UserTimeSlots, Projects as p1
   WHERE Users.email = :email
   AND Users.city = p1.city
@@ -36,16 +37,15 @@ module.exports = (sequelize, DataTypes) => {
   AND UserTimeSlots.end_time >= p1.end_time
   AND p1.curr_capacity < p1.goal_capacity
   EXCEPT(
-    SELECT project_name, creator_email FROM UserJoinsProject
+    SELECT pid FROM UserJoinsProject
     WHERE user_email = :email
   )
 )
-SELECT available_projects.project_name, available_projects.creator_email,
+SELECT Projects.project_name, Projects.creator_email,
   Projects.tag, Projects.project_date, Projects.day_of_the_week,
   Projects.start_time, Projects.end_time, Projects.curr_capacity, Projects.goal_capacity, Projects.city, Projects.state
 FROM UserInterests, available_projects, Projects
-WHERE Projects.project_name = available_projects.project_name
-AND Projects.creator_email = available_projects.creator_email
+WHERE Projects.pid = available_projects.pid
 AND UserInterests.email = :email
 order by interest1 = tag desc, interest2 = tag desc, interest3 = tag desc;`,
 {replacements: {email: email}})

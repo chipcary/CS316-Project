@@ -5,6 +5,9 @@ const User = require('../models').User;
 const UserInterests = require('../models').UserInterests;
 const UserTimeSlots = require('../models').UserTimeSlots;
 const UserJoinsProject = require('../models').UserJoinsProject;
+const UserCreds = require('../models').UserCreds;
+
+var bcrypt = require('bcrypt');
 
 //get all users. for testing only
 userRouter.route('/').get((req, res) => {
@@ -14,6 +17,57 @@ userRouter.route('/').get((req, res) => {
 	})
 	.catch(error => {
 		res.send(error);
+	});
+});
+//validate user password
+userRouter.route('/login/:email&:password').get((req, res) => {
+	UserCreds.findByPk(req.params.email)
+	.then(creds => {
+		bcrypt.compare(req.params.password, creds.hash, function(err, match) {
+		  if(match) {
+		  	res.send(true);
+		  } else {
+		  	res.status(403).send(false);
+		  } 
+		});
+	})
+	.catch(error => {
+		res.send(error);
+	});
+});
+//set or update user password
+userRouter.route('/login/:email&:password').put((req, res) => {
+	//bcrypt automatically salts and hashes passwords
+	//done async bc hashing takes a lot of CPU
+	bcrypt.hash(req.params.password, 10, function(err, hash){
+		UserCreds.findByPk(req.params.email)
+		.then(user => {
+			if(!user){
+				UserCreds.create({
+					email: req.params.email,
+					hash: hash
+				})
+				.then(task =>{
+					res.status(200).send("password entry created for user: " + req.params.email);
+				})
+				.catch(task =>{
+					res.status(500).send(task);
+				});
+			}
+			else{
+				user.hash = hash;
+				user.save()
+				.then(task =>{
+					res.status(200).send("password updated for user: " + req.params.email);
+				})
+				.catch(task =>{
+					res.status(500).send(task);
+				});
+			}
+		})
+		.catch(error => {
+			res.status(500).send(error);
+		});
 	});
 });
 //get attributes associated with a user
@@ -34,7 +88,6 @@ userRouter.route('/:email').get((req, res) => {
 });
 
 //create a new user
-//TODO: hash and store password
 userRouter.route('/:email&:name&:city&:state').post((req, res) => {
 	console.log(req.params);
 	User.create({
@@ -73,7 +126,7 @@ userRouter.route('/:email/:name&:city&:state').put((req, res) => {
 });
 
 //delete a user
-userRouter.route('/destroy/:email').get((req, res) => {
+userRouter.route('/:email').delete((req, res) => {
 	var email = req.params.email;
 	User.destroy({
 		where: {
@@ -90,8 +143,9 @@ userRouter.route('/destroy/:email').get((req, res) => {
 
 //update user interests
 userRouter.route('/:email/interests/:i1&:i2&:i3').put((req, res) => {
+	email = req.params.email
 	var values ={
-		email: req.params.email,
+		email: email,
 		interest1: req.params.i1,
 		interest2: req.params.i2,
 		interest3: req.params.i3
@@ -108,7 +162,7 @@ userRouter.route('/:email/interests/:i1&:i2&:i3').put((req, res) => {
 			});
 		}
 		else{
-			User.create(values)
+			UserInterests.create(values)
 			.then(task =>{
 				res.status(200).send(task);
 			})
@@ -130,7 +184,7 @@ userRouter.route('/:email/timeslots/:dotw&:start_time&:end_time').post((req, res
 		start_time: req.params.start_time,
 		end_time: req.params.end_time
 	};
-	User.create(values)
+	UserTimeSlots.create(values)
 	.then(task =>{
 		res.status(200).send(task);
 	})
@@ -140,16 +194,18 @@ userRouter.route('/:email/timeslots/:dotw&:start_time&:end_time').post((req, res
 });
 
 //delete timeslot
-userRouter.route('/:email/timeslots/destroy/:dotw&:start_time&:end_time').get((req, res) => {
+userRouter.route('/:email/timeslots/:dotw&:start_time&:end_time').delete((req, res) => {
 	var values ={
 		email: req.params.email,
 		day_of_the_week: req.params.dotw,
 		start_time: req.params.start_time,
 		end_time: req.params.end_time
 	};
-	User.destroy(values)
+	UserTimeSlots.destroy({
+		where: values
+	})
 	.then(task =>{
-		res.status(200).send(task);
+		res.sendStatus(200);
 	})
 	.catch(task =>{
 		res.status(500).send(task);
