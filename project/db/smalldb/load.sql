@@ -23,6 +23,4 @@ INSERT INTO Projects(creator_email, project_name, tag, project_date, day_of_the_
 	('bhc17@duke.edu', 'exclude', 'other', TO_DATE('17/12/2018', 'DD/MM/YYYY'), 'monday', 10, 12, 0, 2, 'DURHAM', 'NC', 'desc6');
 
 INSERT INTO UserJoinsProject VALUES
-	('blah', 1),
-	('blah', 5),
-	('bhc17@duke.edu', 6);
+	('bhc17@duke.edu', 5);

@@ -73,7 +73,17 @@ CREATE TRIGGER TG_Capacity_Decrement
   EXECUTE PROCEDURE TF_Capacity_Decrement();
 
 
+CREATE FUNCTION TF_Creator_Joins_Project() RETURNS TRIGGER AS $$
+BEGIN
+    INSERT INTO UserJoinsProject VALUES (NEW.creator_email, NEW.pid);
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
 
+CREATE TRIGGER TG_Creator_Joins_Project
+  AFTER INSERT ON Projects
+  FOR EACH ROW
+  EXECUTE PROCEDURE TF_Creator_Joins_Project();
 
 
 
