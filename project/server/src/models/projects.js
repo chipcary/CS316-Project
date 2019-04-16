@@ -23,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
   });
   Project.associate = function(models) {
     Project.belongsTo(models.User, {foreignKey: 'creator_email'});
+    Project.hasMany(models.UserJoinsProject, {foreignKey: 'pid'});
   };
 
   return Project;

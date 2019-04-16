@@ -41,7 +41,7 @@ module.exports = (sequelize, DataTypes) => {
     WHERE user_email = :email
   )
 )
-SELECT available_projects.project_name, available_projects.creator_email,
+SELECT Projects.project_name, Projects.creator_email,
   Projects.tag, Projects.project_date, Projects.day_of_the_week,
   Projects.start_time, Projects.end_time, Projects.curr_capacity, Projects.goal_capacity, Projects.city, Projects.state
 FROM UserInterests, available_projects, Projects

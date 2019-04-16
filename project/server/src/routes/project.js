@@ -34,8 +34,9 @@ projectRouter.route('/:creator_email/created').get((req, res) => {
 projectRouter.route('/:email/joined').get((req, res) => {
 	UserJoinsProject.findAll({
 		where: {
-			user_email: req.params.user_email
-		}
+			user_email: req.params.email
+		},
+		include: [Project]
 	})
 	.then(results => {
 		res.send(results);
@@ -55,6 +56,7 @@ projectRouter.route('/:pid').get((req, res) => {
 		res.send(error);
 	});
 });
+
 
 //reccomended projects for a user
 projectRouter.route('/:email/best').get((req, res) => {
@@ -116,8 +118,9 @@ projectRouter.route('/:pid')
 
 		//update matching keys
 		for (var key in project_data){
-			project.dataValues[key] = project_data[key];
+			project[key] = project_data[key];
 		}
+		console.log(project);
 		project.save()
 		.then(task =>{
 			res.status(200).send(task);

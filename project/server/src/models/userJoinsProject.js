@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   });
   UserJoinsProject.associate = function(models) {
     UserJoinsProject.belongsTo(models.User, {foreignKey: 'user_email'});
+    UserJoinsProject.belongsTo(models.Project, {foreignKey: 'pid'});
 
   };
   return UserJoinsProject;
