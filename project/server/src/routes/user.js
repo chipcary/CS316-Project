@@ -143,8 +143,9 @@ userRouter.route('/:email').delete((req, res) => {
 
 //update user interests
 userRouter.route('/:email/interests/:i1&:i2&:i3').put((req, res) => {
+	email = req.params.email
 	var values ={
-		email: req.params.email,
+		email: email,
 		interest1: req.params.i1,
 		interest2: req.params.i2,
 		interest3: req.params.i3
@@ -161,7 +162,7 @@ userRouter.route('/:email/interests/:i1&:i2&:i3').put((req, res) => {
 			});
 		}
 		else{
-			User.create(values)
+			UserInterests.create(values)
 			.then(task =>{
 				res.status(200).send(task);
 			})
@@ -183,7 +184,7 @@ userRouter.route('/:email/timeslots/:dotw&:start_time&:end_time').post((req, res
 		start_time: req.params.start_time,
 		end_time: req.params.end_time
 	};
-	User.create(values)
+	UserTimeSlots.create(values)
 	.then(task =>{
 		res.status(200).send(task);
 	})
@@ -200,7 +201,9 @@ userRouter.route('/:email/timeslots/:dotw&:start_time&:end_time').delete((req, r
 		start_time: req.params.start_time,
 		end_time: req.params.end_time
 	};
-	User.destroy(values)
+	UserTimeSlots.destroy({
+		where: values
+	})
 	.then(task =>{
 		res.status(200).send(task);
 	})
