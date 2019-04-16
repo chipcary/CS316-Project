@@ -205,7 +205,7 @@ userRouter.route('/:email/timeslots/:dotw&:start_time&:end_time').delete((req, r
 		where: values
 	})
 	.then(task =>{
-		res.send(task);
+		res.sendStatus(200);
 	})
 	.catch(task =>{
 		res.status(500).send(task);
