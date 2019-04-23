@@ -6,6 +6,8 @@ const UserInterests = require('../models').UserInterests;
 const UserTimeSlots = require('../models').UserTimeSlots;
 const UserJoinsProject = require('../models').UserJoinsProject;
 const UserCreds = require('../models').UserCreds;
+var Sequelize = require('sequelize');
+const Op = Sequelize.Op
 
 var bcrypt = require('bcrypt');
 
@@ -14,6 +16,21 @@ userRouter.route('/').get((req, res) => {
 	User.findAll()
 	.then(email => {
 		res.send(email);
+	})
+	.catch(error => {
+		res.send(error);
+	});
+});
+userRouter.route('/search-substr/:sub').get((req, res) => {
+	User.findAll({
+		where:{
+			name: {
+				[Op.like]: '%' + req.params.sub + '%'
+			}
+		}
+	})
+	.then(users => {
+		res.send(users);
 	})
 	.catch(error => {
 		res.send(error);
