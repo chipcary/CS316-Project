@@ -21,7 +21,7 @@ projectRouter.route('/search-substr/:sub').get((req, res) => {
 	Project.findAll({
 		where:{
 			project_name: {
-				[Op.like]: '%' + req.params.sub + '%'
+				[Op.iLike]: '%' + req.params.sub + '%'
 			}
 		}
 	})

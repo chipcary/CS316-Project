@@ -25,7 +25,7 @@ userRouter.route('/search-substr/:sub').get((req, res) => {
 	User.findAll({
 		where:{
 			name: {
-				[Op.like]: '%' + req.params.sub + '%'
+				[Op.iLike]: '%' + req.params.sub + '%'
 			}
 		}
 	})
