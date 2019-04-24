@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import  * as Constants from './Constants';
+import { BrowserRouter as Router, Route, Switch} from "react-router-dom";
+import UsersSearchPage from "./UsersSearchPage"
 
 class App extends Component {
 
@@ -11,10 +14,10 @@ class App extends Component {
       navbar_items: [Constants.CurrentUserPage, Constants.ProjectsSearchPage, Constants.UsersSearchPage, Constants.SettingsPage]
     }
 
-    this.determineUser();
+   // this.determineUser();
   }
 
-  determineUser = async () => {
+ /* determineUser = async () => {
     if (localStorage.jwtToken) {
         // Set auth token header auth
         const token = localStorage.jwtToken;
@@ -47,36 +50,16 @@ class App extends Component {
           window.location.href = "./login";
         }
     }
-  }
+  }*/
 
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
       <div>
-        <Provider store ={store}>
-          <div className = "App">
-            <Route exact path="/login" component={Login}/>
-            <PrivateRoute exact path="/currentUser" component={CurrentUser}/>
-            <PrivateRoute exact path="/projectsSearch" component={ProjectSearch}/>
-            <PrivateRoute exact path="/usersSearch" component={UsersSearch}/>
-            <PrivateRoute exact path="/settings" component={SettingsPage}/>
-          </div>
-        </Provider>
+          <Router>
+            <div className = "App">
+              <Route exact path="/usersSearch" component={UsersSearchPage}/>
+            </div>
+          </Router>
       </div>
     );
   }

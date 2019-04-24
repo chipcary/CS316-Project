@@ -1,0 +1,5 @@
+export const CurrentUserPage = "VIEW YOUR PROFILE"
+export const ProjectsSearchPage = "SEARCH FOR PROJECTS"
+export const UsersSearchPage = "SEARCH FOR USERS"
+export const SettingsPage = "SETTINGS"
+export const TITLE="CS316 Project"
