@@ -4,12 +4,42 @@ var projectRouter = express.Router();
 const Project = require('../models').Project;
 const User = require('../models').User;
 const UserJoinsProject = require('../models').UserJoinsProject;
+var Sequelize = require('sequelize');
+const Op = Sequelize.Op
 
 //all projects
 projectRouter.route('/').get((req, res) => {
 	Project.findAll()
 	.then(results => {
 		res.send(results);
+	})
+	.catch(error => {
+		res.send(error);
+	});
+});
+projectRouter.route('/search-substr/:sub').get((req, res) => {
+	Project.findAll({
+		where:{
+			project_name: {
+				[Op.iLike]: '%' + req.params.sub + '%'
+			}
+		}
+	})
+	.then(projects => {
+		res.send(projects);
+	})
+	.catch(error => {
+		res.send(error);
+	});
+});
+projectRouter.route('/search-tag/:tag').get((req, res) => {
+	Project.findAll({
+		where:{
+			tag : req.params.tag
+		}
+	})
+	.then(projects => {
+		res.send(projects);
 	})
 	.catch(error => {
 		res.send(error);
