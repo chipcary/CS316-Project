@@ -25,11 +25,15 @@ export default class GeneralMenu extends React.Component {
 		  	</div>
 
 		    <Drawer open={this.state.open} docked={false} onRequestChange={(open) => this.setState({open})}>
-		      <Link to='/usersSearch'>
+		      <Link to='/'>
 		        <MenuItem onClick={this.close} style = {{color: 'rgb(0,188,212)'}}className = "item" primaryText={'Search for Users'}></MenuItem>
 			  </Link>
+			  <Link to='/projectSearch'>
+			  	<MenuItem onClick={this.close} style = {{color: 'rgb(0,188,212)'}}className = "item" primaryText={'Search for Projects'}></MenuItem>
+		      </Link>
 		    </Drawer>
-		  <div>
+
+		  </div>
 		)
 	}
 }

@@ -5,15 +5,15 @@ import SubmitRequest from './SubmitRequest';
 import * as Constants from './Constants';
 import GeneralNavBar from './GeneralNavBar';
 
-export default class ListPage extends React.Component {
+export default class ProjectSearchPage extends React.Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			page_name: "users_page",
-			page_title: "Users",
-			table_columns: ["Name", "City", "State"],
-			table_properties: ["name", "city", "state"],
+			page_name: "projects_page",
+			page_title: "Projects",
+			table_columns: ["Name", "Project Date","Day","Spots Left", "City", "State"],
+			table_properties: ["project_name", "project_date","day_of_the_week","spots_left","city","state"],
 			detail_view_item: {},
 			detail_view_options: [],
 			detail_view_action:'',
@@ -55,7 +55,7 @@ export default class ListPage extends React.Component {
 	async loadDataFromServer() {
 		console.log(this.state.filters['keyword'] == "")
 		if(this.state.filters['keyword'] == ""){
-			var users = await fetch('/api/users/' , { method: 'GET' })
+			var users = await fetch('/api/projects/' , { method: 'GET' })
 				.then(data => data.json())
 				.then((res) => {
 					console.log(res);

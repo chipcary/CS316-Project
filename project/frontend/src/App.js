@@ -4,15 +4,13 @@ import './App.css';
 import  * as Constants from './Constants';
 import { BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import UsersSearchPage from "./UsersSearchPage"
+import ProjectSearchPage from "./ProjectsSearchPage"
 
 class App extends Component {
 
   constructor() {
     super();
 
-    this.state = {
-      navbar_items: [Constants.CurrentUserPage, Constants.ProjectsSearchPage, Constants.UsersSearchPage, Constants.SettingsPage]
-    }
 
    // this.determineUser();
   }
@@ -58,6 +56,7 @@ class App extends Component {
           <Router>
             <div className = "App">
               <Route exact path="/" component={UsersSearchPage}/>
+              <Route exact path="/projectSearch" component={ProjectSearchPage}/>
             </div>
           </Router>
       </div>

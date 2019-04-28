@@ -9,6 +9,7 @@ import {
 } from 'material-ui/Table';
 import * as Constants from './Constants';
 import {Input} from 'reactstrap';
+import { Link } from "react-router-dom";
 import IconButton from 'material-ui/IconButton';
 import Details from 'material-ui/svg-icons/navigation/more-horiz';
 import PropTypes from 'prop-types';
@@ -24,11 +25,11 @@ export default class PageTable extends Component {
 			fixedFooter: false,
 			stripedRows: false,
 			showRowHover: true,
-			selectable: true,
+			selectable: false,
 			multiSelectable: false,
 			enableSelectAll: false,
 			deselectOnClickaway: false,
-			showCheckBoxes: true,
+			showCheckBoxes: false,
 			showDetails: true,
 			page_name: this.props.page_name,
 		};
@@ -39,15 +40,22 @@ export default class PageTable extends Component {
 	}
 
 	displayValue(item, prop){
-		return item[prop];
+		switch(prop){
+			case 'spots_left':
+				return item["goal_capacity"]-item["curr_capacity"];
+			case 'day_of_the_week':
+				return String.toUpperCase(item['day_of_the_week'])
+			default:
+				return item[prop];
+		}
 	}
 
-	determineSelected = (index, item) => {
+	/*determineSelected = (index, item) => {
 		if(this.state.selectable){
 			return this.props.selected_indexes.includes(index) || this.props.selected
 		}
 		return false;
-	}
+	}*/
 
 	determineColumns = () => {
 		return this.props.table_properties.length + (this.state.showDetails ? 1: 0);
@@ -81,7 +89,7 @@ export default class PageTable extends Component {
 	getDetailsCol = () => {
 		{if(this.state.showDetails){
 			return(
-				<TableHeaderColumn> "Details"
+				<TableHeaderColumn> Details
 				</TableHeaderColumn>
 			);
 		}}
@@ -95,8 +103,7 @@ export default class PageTable extends Component {
                 fixedHeader={this.state.fixedHeader}
                 fixedFooter={this.state.fixedFooter}
                 selectable={this.state.selectable}
-                multiSelectable={this.state.multiSelectable}
-                onRowSelection = {(res) => this.props.handleSelect(res)}>
+                multiSelectable={this.state.multiSelectable}>
         	  <TableHeader
             	displaySelectAll={this.state.enableSelectAll}
             	adjustForCheckbox={this.state.selectable}
@@ -113,27 +120,27 @@ export default class PageTable extends Component {
               </TableHeader>
 
               <TableBody
-	            displayRowCheckbox={this.state.showCheckboxes}
-	            deselectOnClickaway={this.state.deselectOnClickaway}
+	            displayRowCheckbox={false}
 	            showRowHover={this.state.showRowHover}
 	            stripedRows={this.state.stripedRows}>
 
 	              {this.props.list_items.map((item, index) => 
-	                <TableRow className = {`myrow ${this.state.showCheckboxes ? " trselect":""} ${item.enabled ? 'enabled' : ''}`} selected = {this.determineSelected(index, item)} key={index}>
+	                <TableRow key={index}>
 	                  {this.props.table_properties.map(prop => 
 	                    <TableRowColumn
 	                      key={prop}
-	                      onClick={e => this.props.handleSelect(e, item)}>
+	                      >
 	                      {this.displayValue(item, prop)}
 	                    </TableRowColumn>
 	                   )}
 
 	                   <div>
-		                   (<TableRowColumn>
-	                        	<IconButton onClick={(e) => this.props.handleDetailViewSelect(e, item) }>
+		                   <TableRowColumn>
+	                        	<Link to="/">
 	                          		<Details></Details>
-	                        	</IconButton>
-	                    	</TableRowColumn>)
+	                          	</Link>
+	                        	
+	                    	</TableRowColumn>
                     	</div>
 
                     	                </TableRow>
