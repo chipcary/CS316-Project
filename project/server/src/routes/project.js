@@ -109,6 +109,22 @@ projectRouter.route('/:email/best').get((req, res) => {
 	User.getRecProjects(req.params.email, res);
 });
 
+projectRouter.route('/:pid/users/').get((req, res) => {
+	UserJoinsProject.findAll({
+		where: {
+			pid: req.params.pid
+		},
+		include: [User],
+		attributes: ['User.email']
+	})
+	.then(results => {
+		res.send(results);
+	})
+	.catch(error => {
+		res.send(error);
+	});
+});
+
 //add user to project
 projectRouter.route('/:pid/users/:user_email').post((req, res) => {
 	UserJoinsProject.create({
