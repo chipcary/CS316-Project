@@ -42,7 +42,22 @@ userRouter.route('/login/:email&:password').get((req, res) => {
 	.then(creds => {
 		bcrypt.compare(req.params.password, creds.hash, function(err, match) {
 		  if(match) {
-		  	res.send(true);
+		  	const payload = {
+		  		name: user.name,
+		  	}
+		  	jwt.sign(
+		  		payload,
+		  		"secret",
+		  		{
+		  			expiresIn: 31556926
+		  		},
+		  		(err, token) => {
+		  			var toSend = {};
+		  			toSend.success = true;
+		  			toSend.token = "Bearer " + token;
+		  			res.send(toSend);
+		  		}
+		  	);
 		  } else {
 		  	res.status(403).send(false);
 		  } 

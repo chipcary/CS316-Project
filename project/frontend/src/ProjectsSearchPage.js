@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import PageTable from './PageTable';
-import SubmitRequest from './SubmitRequest';
 import * as Constants from './Constants';
 import GeneralNavBar from './GeneralNavBar';
 

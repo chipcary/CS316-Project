@@ -1,9 +1,13 @@
 import React from 'react';
+import axios from 'axios';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import jwt_decode from 'jwt-decode';
+import { connect } from 'react-redux';
+import {loginUser} from './action';
 
 
-export default class LoginPage extends Component {
+class LoginPage extends React.Component {
 	constructor() {
 		super();
 		this.state = {
@@ -11,6 +15,7 @@ export default class LoginPage extends Component {
 			password: "",
 			errors: {}
 		};
+
 	}
 
 	componentDidMount() {
@@ -23,46 +28,26 @@ export default class LoginPage extends Component {
 		if(nextProps.auth.isAuthenticated){
 			this.props.history.push("/userSearch");
 		}
-		if(nextProps.errors){
-			this.setState({
-				errors: nextProps.errors
-			});
-		}
 	}
+
 
 	onChange = e => {
 		this.setState({ [e.target.id]: e.target.value });
-	};
+	}
 
-	onSubmit = e => {
+	async onSubmit(e) {
 		e.preventDefault();
 		const userData = {
 			email: this.state.email,
 			password: this.state.password,
 		}
-		await loginUser(userData);
+		this.loginUser(userData);
 	}
 
-	async loginUser = userData => dispatch => {
-		var path = "/api/login/" + this.state.email + "&" + "this.state.password";
-		var success = await fetch(path, {method: 'GET'})
-			.then(data => data.json())
-			.then((res) => {
-				if(res.success) {
-					const {token} = res.token;
-					localStorage.setItem("jwtToken", token);
-					setAuthToken(token);
-					const decoded = jwt_decode(token);
-					dispatch(setCurrentUser(decoded));
-				} else {
-					alert("The email/password provided was invalid")
-				}
-			})
-	}
+
 
 	setCurrentUser = (decoded) => {
 		return {
-			type: SET_CURRENTUSER,
 			payload: decoded,
 		};
 	}
@@ -93,9 +78,6 @@ export default class LoginPage extends Component {
 	                  error={errors.email}
 	                  id="email"
 	                  type="text"
-	                  className={classnames("", {
-	                    invalid: errors.email || errors.emailnotfound
-	                  })}
 	                />
 	                <label htmlFor="email">Email</label>
 	                <span className="red-text">
@@ -110,9 +92,6 @@ export default class LoginPage extends Component {
 	                  error={errors.password}
 	                  id="password"
 	                  type="password"
-	                  className={classnames("", {
-	                    invalid: errors.password || errors.passwordincorrect
-	                  })}
 	                />
 	                <label htmlFor="password">Password</label>
 	                <span className="red-text">
@@ -142,3 +121,15 @@ export default class LoginPage extends Component {
 	    );
 	}
 }
+
+LoginPage.propTypes = {
+  auth: PropTypes.object.isRequired,
+};
+const mapStateToProps = state => ({
+  auth: state.auth,
+});
+export default connect(
+  mapStateToProps,
+  {loginUser}
+)(LoginPage);
+

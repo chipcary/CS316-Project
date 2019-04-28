@@ -8,50 +8,57 @@ import ProjectSearchPage from "./ProjectsSearchPage"
 import DifferentUserPage from "./DifferentUserPage"
 import DifferentProjectPage from "./DifferentProjectPage"
 import LoginPage from "./LoginPage"
+import jwt_decode from "jwt-decode";
+import axios from 'axios';
+import {setCurrentUser, logoutUser, setAuthToken} from './action';
+import configureStore from "./store";
+
+var store = configureStore();
 
 class App extends Component {
 
   constructor() {
     super();
 
+    this.state = {
+      current_user: {},
+    }
 
-   // this.determineUser();
+    this.detemineUser = this.determineUser.bind();
+    this.determineUser();
   }
 
- /* determineUser = async () => {
+  determineUser = async () => {
     if (localStorage.jwtToken) {
-        // Set auth token header auth
         const token = localStorage.jwtToken;
-        //check user still exists
         const decoded = jwt_decode(token);
-        var user_id = decoded.id;
+        var user_email = decoded.email;
         setAuthToken(token);
         
-        // Decode token and get user info and exp
-        if(decoded.admin==true){
-          setAdminToken(token);
-          this.state = {
-            user: true,
-          }
-        }
+
         // Set user and isAuthenticated
         store.dispatch(setCurrentUser(decoded));
         // Check for expired token
         const currentTime = Date.now() / 1000; // to get in milliseconds
-        var response = await SubmitRequest.submitGetUserByID(user_id);
+        var path = '/api/users/' + user_email;
 
-        if (decoded.exp < currentTime || !response.success) {
-          // Logout user
-          store.dispatch(logoutUser());
-          this.state = {
-            user: false,
-          }
-      
-          // Redirect to login
-          window.location.href = "./login";
-        }
+        var response = await fetch(path, {method: 'GET'})
+          .then(data => data.json())
+          .then((res) => {
+            if(decoded.exp < currentTime){
+              store.dispatch(this.logoutUser());
+              this.setState = {
+                user: false,
+              }
+              window.location.href="./login";
+            } else {
+              this.setState({
+                current_user: res[0]
+              });
+            }
+        });
     }
-  }*/
+  }
 
   render() {
     return (
