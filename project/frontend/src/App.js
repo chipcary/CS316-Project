@@ -7,7 +7,7 @@ import UsersSearchPage from "./UsersSearchPage"
 
 class App extends Component {
 
-  constructur() {
+  constructor() {
     super();
 
     this.state = {
@@ -57,7 +57,7 @@ class App extends Component {
       <div>
           <Router>
             <div className = "App">
-              <Route exact path="/usersSearch" component={UsersSearchPage}/>
+              <Route exact path="/" component={UsersSearchPage}/>
             </div>
           </Router>
       </div>

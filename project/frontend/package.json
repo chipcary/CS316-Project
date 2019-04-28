@@ -8,6 +8,7 @@
     "react-dom": "^16.8.5",
     "react-router-dom": "^5.0.0",
     "react-scripts": "2.1.8",
+    "react-strap": "0.0.1",
     "typescript": "^3.3.4000"
   },
   "scripts": {
@@ -24,5 +25,6 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "proxy": "http://localhost:8000"
 }

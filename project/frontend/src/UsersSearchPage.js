@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import PageTable from './PageTable';
-import SendRequest from './SendRequest';
-import NavBar from './NavBar';
+import SubmitRequest from './SubmitRequest';
 import * as Constants from './Constants';
 
 export default class ListPage extends React.Component {
@@ -10,10 +9,10 @@ export default class ListPage extends React.Component {
 		super(props);
 
 		this.state = {
-			page_name,
-			page_title,
-			table_columns,
-			table_properties,
+			page_name: "users_page",
+			page_title: "Users",
+			table_columns: ["Name"],
+			table_properties: ["name"],
 			detail_view_item: {},
 			detail_view_options: [],
 			detail_view_action:'',
@@ -33,7 +32,7 @@ export default class ListPage extends React.Component {
 		*/
 		this.onFilterValueChange = this.onFilterValueChange.bind(this);
 		this.onFilterValueSelection = this.onFilterValueSelection.bind(this);
-		this.setInitPages();
+		//this.setInitPages();
 	}
 /*
 	toggle = (modalType) => {
@@ -53,7 +52,8 @@ export default class ListPage extends React.Component {
 	}
 
 	async loadDataFromServer() {
-		let allData = await SendRequest.getAllUserData();
+		let allData = await SubmitRequest.getAllUsers();
+		console.log(allData);
 		await this.setState({
 			data: allData.data,
 			filterChange: false,
@@ -133,9 +133,26 @@ export default class ListPage extends React.Component {
 	render () {
 		return (
 			<div className="list-page">
-			<NavBar title={Constants.UsersSearchTitle})></NavBar>
-
-	}
-
-
+				<div>
+					<PageTable
+						columns={this.state.table_columns}
+						table_properties={this.state.table_properties} 
+                        list_items={this.state.data}
+                        selected_items={this.state.selected_items}
+                        selected_indexes = {this.state.selected_indexes}
+                        showDetails = {true}
+                        selectable = {this.props.simple !=undefined ? !this.props.simple : true}
+                        sortable = {this.props.simple != undefined ? !this.props.simple : true}
+                        title = {this.state.page_title}
+                        showLoading = {this.props.simple ? false : true}
+                        showHeader = {true}
+                        filters = {this.state.filters}
+                        table_options = {this.state.table_options}
+                        onFilterValueSelection = {this.onFilterValueSelection}
+                        onFilterValueChange = {this.onFilterValueChange}
+                        onRemoveFilter = {this.onRemoveFilter} />
+                </div>
+            </div>
+        )
+    }
 }
