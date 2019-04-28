@@ -40,6 +40,8 @@ export default class PageTable extends Component {
 	}
 
 	displayValue(item, prop){
+
+
 		switch(prop){
 			case 'spots_left':
 				return item["goal_capacity"]-item["curr_capacity"];
@@ -136,7 +138,7 @@ export default class PageTable extends Component {
 
 	                   <div>
 		                   <TableRowColumn>
-	                        	<Link to="/">
+	                        	<Link to={this.props.type == "User" ? `/users/${item.email}` : "/projectSearch"}>
 	                          		<Details></Details>
 	                          	</Link>
 	                        	

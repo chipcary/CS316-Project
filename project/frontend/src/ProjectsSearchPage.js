@@ -65,7 +65,7 @@ export default class ProjectSearchPage extends React.Component {
 					});
 				});
 		} else {
-			var path = '/api/users/search-substr/' + this.state.filters['keyword'];
+			var path = '/api/projects/search-substr/' + this.state.filters['keyword'];
 			var users = await fetch(path, {method: 'GET'})
 				.then(data => data.json())
 				.then((res) => {
@@ -151,9 +151,10 @@ export default class ProjectSearchPage extends React.Component {
 	render () {
 		return (
 			<div>
-			    <GeneralNavBar></GeneralNavBar>
+			    <GeneralNavBar title={"Project Search Page"}></GeneralNavBar>
 				<div>
 					<PageTable
+						type={"User"}
 						columns={this.state.table_columns}
 						table_properties={this.state.table_properties} 
                         list_items={this.state.data}

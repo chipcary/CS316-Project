@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { Navbar, NavbarBrand} from 'reactstrap';
 import GeneralMenu from './GeneralMenu'
 import * as Constants from './Constants';
+import './CenteredListingPage.css';
+
 
 
 export default class GeneralNavBar extends React.Component { 
@@ -25,9 +27,11 @@ export default class GeneralNavBar extends React.Component {
 				<Navbar id="bar" color="light" light expand="md">
 				  <div id='menu-title'>
 				    <GeneralMenu></GeneralMenu>
-				    <div>{this.props.title}</div>
+				    <div></div>
 				  </div>
-				  <NavbarBrand href="/">{Constants.TITLE}</NavbarBrand>
+				  <div className="paddedDiv">
+				  <NavbarBrand href="/">{this.props.title}</NavbarBrand>
+				  </div>
 				</Navbar>
 			</div>
 		);

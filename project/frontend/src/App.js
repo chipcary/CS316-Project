@@ -5,6 +5,7 @@ import  * as Constants from './Constants';
 import { BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import UsersSearchPage from "./UsersSearchPage"
 import ProjectSearchPage from "./ProjectsSearchPage"
+import DifferentUserPage from "./DifferentUserPage"
 
 class App extends Component {
 
@@ -57,6 +58,7 @@ class App extends Component {
             <div className = "App">
               <Route exact path="/" component={UsersSearchPage}/>
               <Route exact path="/projectSearch" component={ProjectSearchPage}/>
+              <Route path="/users/:user_email" component={DifferentUserPage}/>
             </div>
           </Router>
       </div>

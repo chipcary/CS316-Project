@@ -1,11 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import PageTable from './PageTable';
-import SubmitRequest from './SubmitRequest';
 import * as Constants from './Constants';
 import GeneralNavBar from './GeneralNavBar';
 
-export default class ListPage extends React.Component {
+export default class UsersSearchPage extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -151,9 +150,10 @@ export default class ListPage extends React.Component {
 	render () {
 		return (
 			<div>
-			    <GeneralNavBar></GeneralNavBar>
+			    <GeneralNavBar title={"Users Search Page"}></GeneralNavBar>
 				<div>
 					<PageTable
+						type={"User"}
 						columns={this.state.table_columns}
 						table_properties={this.state.table_properties} 
                         list_items={this.state.data}
