@@ -154,7 +154,7 @@ export default class ProjectSearchPage extends React.Component {
 			    <GeneralNavBar title={"Project Search Page"}></GeneralNavBar>
 				<div>
 					<PageTable
-						type={"User"}
+						type={"Project"}
 						columns={this.state.table_columns}
 						table_properties={this.state.table_properties} 
                         list_items={this.state.data}

@@ -138,7 +138,7 @@ export default class PageTable extends Component {
 
 	                   <div>
 		                   <TableRowColumn>
-	                        	<Link to={this.props.type == "User" ? `/users/${item.email}` : "/projectSearch"}>
+	                        	<Link to={this.props.type == "User" ? `/users/${item.email}` : `/projects/${item.pid}`}>
 	                          		<Details></Details>
 	                          	</Link>
 	                        	

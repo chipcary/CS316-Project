@@ -76,6 +76,22 @@ projectRouter.route('/:email/joined').get((req, res) => {
 	});
 });
 
+//get all users that belong to a certain project
+projectRouter.route('/:pid/members').get((req, res) =>{
+	UserJoinsProject.findAll({
+		where: {
+			pid: req.params.pid
+		},
+		include: [User]
+	})
+	.then(results => {
+		res.send(results);
+	})
+	.catch(error => {
+		res.send(error);
+	});
+});
+
 //get specific project
 projectRouter.route('/:pid').get((req, res) => {
 	Project.findByPk(req.params.pid)

@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import UsersSearchPage from "./UsersSearchPage"
 import ProjectSearchPage from "./ProjectsSearchPage"
 import DifferentUserPage from "./DifferentUserPage"
+import DifferentProjectPage from "./DifferentProjectPage"
 
 class App extends Component {
 
@@ -59,6 +60,7 @@ class App extends Component {
               <Route exact path="/" component={UsersSearchPage}/>
               <Route exact path="/projectSearch" component={ProjectSearchPage}/>
               <Route path="/users/:user_email" component={DifferentUserPage}/>
+              <Route path="/projects/:pid" component={DifferentProjectPage}/>
             </div>
           </Router>
       </div>
