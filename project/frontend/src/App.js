@@ -7,6 +7,7 @@ import UsersSearchPage from "./UsersSearchPage"
 import ProjectSearchPage from "./ProjectsSearchPage"
 import DifferentUserPage from "./DifferentUserPage"
 import DifferentProjectPage from "./DifferentProjectPage"
+import LoginPage from "./LoginPage"
 
 class App extends Component {
 
@@ -57,7 +58,8 @@ class App extends Component {
       <div>
           <Router>
             <div className = "App">
-              <Route exact path="/" component={UsersSearchPage}/>
+              <Route exact path="/login" component={LoginPage}/>
+              <Route exact path="/userSearch" component={UsersSearchPage}/>
               <Route exact path="/projectSearch" component={ProjectSearchPage}/>
               <Route path="/users/:user_email" component={DifferentUserPage}/>
               <Route path="/projects/:pid" component={DifferentProjectPage}/>
