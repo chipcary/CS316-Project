@@ -59,7 +59,6 @@ describe('Unit testing the /users route', function() {
                 .get('/api/users/login/test_user&test_password')
                 .then(function(res2){
                     assert.equal(res2.status, 200);
-                    assert.equal(res2.body, true);              
             });
         });
     });
