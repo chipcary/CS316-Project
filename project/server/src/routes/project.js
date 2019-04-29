@@ -49,7 +49,9 @@ projectRouter.route('/search-tag/:tag').get((req, res) => {
 	var page = req.query.page;
 	var options = {
 		where:{
-			tag : req.params.tag
+			tag: {
+				[Op.iLike]: '%' + req.params.tag + '%'
+			}
 		},
 		limit: LIMIT
 	};
