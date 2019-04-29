@@ -1,4 +1,5 @@
 import * as Constants from './../Constants';
+import {SET_CURRENT_USER} from "./actionTypes";
 
 const isEmpty = require("is-empty");
 
@@ -8,9 +9,14 @@ const initialState = {
 };
 
 export default function(state = initialState, action){
-	return {
-		...state,
-		isAuthenticated: !isEmpty(action.payload),
-		user: action.payload
-	};
+	switch(action.type) {
+		case SET_CURRENT_USER:
+			return {
+				...state,
+				isAuthenticated: !isEmpty(action.payload),
+				user: action.payload
+			};
+		default:
+			return state;
+	}
 }

@@ -59,12 +59,16 @@ userRouter.route('/login/:email&:password').get((req, res) => {
 		  		}
 		  	);
 		  } else {
+		  	console.log('hello');
 		  	res.status(403).send(false);
 		  } 
 		});
 	})
 	.catch(error => {
-		res.send(error);
+		console.log('hello22')
+		var toSend = {};
+		toSend.success = false;
+		res.send(toSend);
 	});
 });
 //set or update user password

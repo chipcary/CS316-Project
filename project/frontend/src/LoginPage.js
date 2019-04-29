@@ -1,13 +1,11 @@
-import React from 'react';
-import axios from 'axios';
+import React, {Component} from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import jwt_decode from 'jwt-decode';
 import { connect } from 'react-redux';
 import {loginUser} from './action';
 
 
-class LoginPage extends React.Component {
+class LoginPage extends Component {
 	constructor() {
 		super();
 		this.state = {
@@ -15,7 +13,6 @@ class LoginPage extends React.Component {
 			password: "",
 			errors: {}
 		};
-
 	}
 
 	componentDidMount() {
@@ -33,33 +30,24 @@ class LoginPage extends React.Component {
 
 	onChange = e => {
 		this.setState({ [e.target.id]: e.target.value });
-	}
+	};
 
-	async onSubmit(e) {
+	onSubmit = (e) => {
 		e.preventDefault();
 		const userData = {
 			email: this.state.email,
 			password: this.state.password,
 		}
-		this.loginUser(userData);
-	}
-
-
-
-	setCurrentUser = (decoded) => {
-		return {
-			payload: decoded,
-		};
-	}
+		this.props.loginUser(userData);
+	};
 
 	render() {
-		const { errors } = this.state;
 		return (
 		<div className="container">
 	        <div style={{ marginTop: "4rem" }} className="row">
 	          <div className="col s8 offset-s2">
 	            <Link to="/" className="btn-flat waves-effect">
-	              <i className="material-icons left">keyboard_backspace</i> Back to
+	              <i className="material-icons left"></i> Back to
 	              home
 	            </Link>
 	            <div className="col s12" style={{ paddingLeft: "11.250px" }}>
@@ -71,33 +59,26 @@ class LoginPage extends React.Component {
 	              </p>
 	            </div>
 	            <form noValidate onSubmit={this.onSubmit}>
+
 	              <div className="input-field col s12">
 	                <input
 	                  onChange={this.onChange}
 	                  value={this.state.email}
-	                  error={errors.email}
 	                  id="email"
 	                  type="text"
 	                />
 	                <label htmlFor="email">Email</label>
-	                <span className="red-text">
-	                  {errors.email}
-	                  {errors.emailnotfound}
-	                </span>
+
 	              </div>
 	              <div className="input-field col s12">
 	                <input
 	                  onChange={this.onChange}
 	                  value={this.state.password}
-	                  error={errors.password}
 	                  id="password"
 	                  type="password"
 	                />
 	                <label htmlFor="password">Password</label>
-	                <span className="red-text">
-	                  {errors.password}
-	                  {errors.passwordincorrect}
-	                </span>
+
 	              </div>
 	              <div className="col s12" style={{ paddingLeft: "11.250px" }}>
 	                <button
@@ -122,14 +103,13 @@ class LoginPage extends React.Component {
 	}
 }
 
-LoginPage.propTypes = {
-  auth: PropTypes.object.isRequired,
-};
+
 const mapStateToProps = state => ({
-  auth: state.auth,
+  auth: state.auth
 });
+
 export default connect(
   mapStateToProps,
-  {loginUser}
+  { loginUser }
 )(LoginPage);
 

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import  * as Constants from './Constants';
@@ -10,12 +10,14 @@ import DifferentProjectPage from "./DifferentProjectPage"
 import LoginPage from "./LoginPage"
 import jwt_decode from "jwt-decode";
 import axios from 'axios';
-import {setCurrentUser, logoutUser, setAuthToken} from './action';
-import configureStore from "./store";
+import {Provider} from 'react-redux';
+import {setCurrentUser, logoutUser} from './action';
+import setAuthToken from './setAuthToken';
+import configureStore from "./configureStore";
 
-var store = configureStore();
+const store = configureStore();
 
-class App extends Component {
+class App extends React.Component {
 
   constructor() {
     super();
@@ -30,39 +32,37 @@ class App extends Component {
 
   determineUser = async () => {
     if (localStorage.jwtToken) {
-        const token = localStorage.jwtToken;
-        const decoded = jwt_decode(token);
-        var user_email = decoded.email;
-        setAuthToken(token);
-        
+      const token = localStorage.jwtToken;
+      const decoded = jwt_decode(token);
+      var user_email = decoded.email;
+      setAuthToken(token);
+      
 
-        // Set user and isAuthenticated
-        store.dispatch(setCurrentUser(decoded));
-        // Check for expired token
-        const currentTime = Date.now() / 1000; // to get in milliseconds
-        var path = '/api/users/' + user_email;
+      store.dispatch(setCurrentUser(decoded));
+      const currentTime = Date.now() / 1000; // to get in milliseconds
+      var path = '/api/users/' + user_email;
 
-        var response = await fetch(path, {method: 'GET'})
-          .then(data => data.json())
-          .then((res) => {
-            if(decoded.exp < currentTime){
-              store.dispatch(this.logoutUser());
-              this.setState = {
-                user: false,
-              }
-              window.location.href="./login";
-            } else {
-              this.setState({
-                current_user: res[0]
-              });
-            }
+      var response = await fetch(path);
+      var res = await response.json();
+      if(decoded.exp < currentTime){
+        store.dispatch(logoutUser());
+        this.setState = {
+          user: false,
+        }
+        window.location.href="./login";
+      } else {
+        this.setState({
+          current_user: res[0]
         });
+      }
     }
   }
 
   render() {
+    let props ={};
     return (
       <div>
+          <Provider store={store}>
           <Router>
             <div className = "App">
               <Route exact path="/login" component={LoginPage}/>
@@ -72,6 +72,7 @@ class App extends Component {
               <Route path="/projects/:pid" component={DifferentProjectPage}/>
             </div>
           </Router>
+          </Provider>
       </div>
     );
   }

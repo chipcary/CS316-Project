@@ -1,5 +1,7 @@
 import jwt_decode from "jwt-decode";
 import axios from "axios";
+import setAuthToken from "./setAuthToken"
+import {SET_CURRENT_USER} from "./reducers/actionTypes";
 
 
 export const loginUser = userData => dispatch => {
@@ -7,12 +9,17 @@ export const loginUser = userData => dispatch => {
   axios
     .get(path, userData)
     .then( res => {
-      const { token } = res.data;
-      localStorage.setItem("jwtToken", token);
+      if(res.data.success == true) {
+      
+        const { token } = res;
+        localStorage.setItem("jwtToken", token);
 
-      setAuthToken(token);
-      const decoded = jwt_decode(token);
-      dispatch(setCurrentUser(decoded));
+        setAuthToken(token);
+        const decoded = jwt_decode(token);
+        dispatch(setCurrentUser(decoded));
+      } else {
+        alert('Invalid Email/Password');
+      }
     })
     .catch(err => {
       dispatch({
@@ -23,7 +30,8 @@ export const loginUser = userData => dispatch => {
 
 export const setCurrentUser = (decoded) => {
   return {
-    payload: decoded
+    payload: decoded,
+    type: SET_CURRENT_USER,
   };
 };
 
@@ -32,14 +40,6 @@ export const logoutUser = () => dispatch => {
 
   setAuthToken(false);
   dispatch(setCurrentUser({}));
-};
-
-export const setAuthToken = token => {
-  if(token) {
-    axios.defaults.headers.common["Authorization"] = token;
-  } else {
-    delete axios.defaults.headers.common["Authorization"];
-  }
 };
 
 
