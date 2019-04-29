@@ -11,10 +11,10 @@ const Op = Sequelize.Op
 
 var jwt = require('jsonwebtoken');
 var bcrypt = require('bcrypt');
-
+const LIMIT = 100;
 //get all users. for testing only
 userRouter.route('/').get((req, res) => {
-	User.findAll()
+	User.findAll({limit: LIMIT})
 	.then(email => {
 		res.send(email);
 	})
@@ -28,7 +28,8 @@ userRouter.route('/search-substr/:sub').get((req, res) => {
 			name: {
 				[Op.iLike]: '%' + req.params.sub + '%'
 			}
-		}
+		},
+		limit: LIMIT
 	})
 	.then(users => {
 		res.send(users);

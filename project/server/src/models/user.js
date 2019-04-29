@@ -32,9 +32,6 @@ module.exports = (sequelize, DataTypes) => {
   AND Users.city = p1.city
   AND Users.state = p1.state
   AND UserTimeSlots.email = Users.email
-  AND UserTimeSlots.day_of_the_week = p1.day_of_the_week
-  AND UserTimeSlots.start_time <= p1.start_time
-  AND UserTimeSlots.end_time >= p1.end_time
   AND p1.curr_capacity < p1.goal_capacity
   EXCEPT(
     SELECT pid FROM UserJoinsProject

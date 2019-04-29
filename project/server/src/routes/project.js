@@ -7,9 +7,10 @@ const UserJoinsProject = require('../models').UserJoinsProject;
 var Sequelize = require('sequelize');
 const Op = Sequelize.Op
 
+const LIMIT = 100;
 //all projects
 projectRouter.route('/').get((req, res) => {
-	Project.findAll()
+	Project.findAll({limit: LIMIT})
 	.then(results => {
 		res.send(results);
 	})
