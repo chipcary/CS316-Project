@@ -14,21 +14,14 @@ CREATE TABLE UserInterests
  interest2 VARCHAR(256),
  interest3 VARCHAR(256));
 
-CREATE TABLE UserTimeSlots
-(email VARCHAR(256) NOT NULL REFERENCES Users(email) ON DELETE CASCADE,
- day_of_the_week VARCHAR(256) NOT NULL CHECK(day_of_the_week IN ('sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday')),
- start_time INTEGER NOT NULL CHECK(start_time >= 0 AND start_time < 24 AND start_time < end_time),
- end_time INTEGER NOT NULL CHECK(end_time >= 0 AND end_time < 24));
 
 CREATE TABLE Projects
 (pid SERIAL PRIMARY KEY,
  creator_email VARCHAR(256) NOT NULL REFERENCES Users(email) ON DELETE CASCADE,
  project_name VARCHAR(256) NOT NULL,
  tag VARCHAR(256) NOT NULL,
- project_date DATE NOT NULL,
- day_of_the_week VARCHAR(256) NOT NULL CHECK(day_of_the_week IN ('sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday')),
- start_time INTEGER NOT NULL CHECK(start_time >= 0 AND start_time < 24 AND start_time < end_time),
- end_time INTEGER NOT NULL CHECK(end_time >= 0 AND end_time < 24),
+ start_date TIMESTAMP NOT NULL,
+ end_date TIMESTAMP NOT NULL CHECK(start_date < end_date), 
  curr_capacity INTEGER NOT NULL CHECK(curr_capacity <= goal_capacity),
  goal_capacity INTEGER NOT NULL,
  city VARCHAR(256) NOT NULL,

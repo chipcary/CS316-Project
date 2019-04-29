@@ -17,7 +17,6 @@ module.exports = (sequelize, DataTypes) => {
   User.associate = function(models) {
     User.hasOne(models.UserInterests, {foreignKey: 'email'});
     User.hasOne(models.UserCreds, {foreignKey: 'email'});
-    User.hasMany(models.UserTimeSlots, {foreignKey: 'email'});
     User.hasMany(models.UserJoinsProject, {foreignKey: 'user_email'});
     User.hasMany(models.Project, {foreignKey: 'creator_email'});
   };
@@ -27,11 +26,11 @@ module.exports = (sequelize, DataTypes) => {
   User.getRecProjects =  function(email, res){
         sequelize.query(`WITH available_projects AS(
   SELECT p1.pid
-  FROM Users, UserInterests, UserTimeSlots, Projects as p1
+  FROM Users, UserInterests, Projects as p1
   WHERE Users.email = :email
   AND Users.city = p1.city
   AND Users.state = p1.state
-  AND UserTimeSlots.email = Users.email
+  AND p1.start_date > NOW()
   AND p1.curr_capacity < p1.goal_capacity
   EXCEPT(
     SELECT pid FROM UserJoinsProject
@@ -39,8 +38,8 @@ module.exports = (sequelize, DataTypes) => {
   )
 )
 SELECT Projects.project_name, Projects.creator_email,
-  Projects.tag, Projects.project_date, Projects.day_of_the_week,
-  Projects.start_time, Projects.end_time, Projects.curr_capacity, Projects.goal_capacity, Projects.city, Projects.state
+  Projects.tag, Projects.start_date, Projects.end_date, Projects.curr_capacity, 
+  Projects.goal_capacity, Projects.city, Projects.state
 FROM UserInterests, available_projects, Projects
 WHERE Projects.pid = available_projects.pid
 AND UserInterests.email = :email

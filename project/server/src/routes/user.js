@@ -3,7 +3,6 @@ var app = express();
 var userRouter = express.Router();
 const User = require('../models').User;
 const UserInterests = require('../models').UserInterests;
-const UserTimeSlots = require('../models').UserTimeSlots;
 const UserJoinsProject = require('../models').UserJoinsProject;
 const UserCreds = require('../models').UserCreds;
 var Sequelize = require('sequelize');
@@ -131,7 +130,7 @@ userRouter.route('/:email').get((req, res) => {
 		where: {
 			email: email
 		},
-		include: [UserTimeSlots, UserInterests]
+		include: [UserInterests]
 	})
 	.then(email => {
 		res.send(email);
@@ -249,39 +248,39 @@ userRouter.route('/:email/interests/:i1&:i2&:i3').put((req, res) => {
 });
 
 //add timeslots
-userRouter.route('/:email/timeslots/:dotw&:start_time&:end_time').post((req, res) => {
-	var values ={
-		email: req.params.email,
-		day_of_the_week: req.params.dotw,
-		start_time: req.params.start_time,
-		end_time: req.params.end_time
-	};
-	UserTimeSlots.create(values)
-	.then(task =>{
-		res.status(200).send(task);
-	})
-	.catch(task =>{
-		res.status(500).send(task);
-	});
-});
+// userRouter.route('/:email/timeslots/:dotw&:start_time&:end_time').post((req, res) => {
+// 	var values ={
+// 		email: req.params.email,
+// 		day_of_the_week: req.params.dotw,
+// 		start_time: req.params.start_time,
+// 		end_time: req.params.end_time
+// 	};
+// 	UserTimeSlots.create(values)
+// 	.then(task =>{
+// 		res.status(200).send(task);
+// 	})
+// 	.catch(task =>{
+// 		res.status(500).send(task);
+// 	});
+// });
 
 //delete timeslot
-userRouter.route('/:email/timeslots/:dotw&:start_time&:end_time').delete((req, res) => {
-	var values ={
-		email: req.params.email,
-		day_of_the_week: req.params.dotw,
-		start_time: req.params.start_time,
-		end_time: req.params.end_time
-	};
-	UserTimeSlots.destroy({
-		where: values
-	})
-	.then(task =>{
-		res.sendStatus(200);
-	})
-	.catch(task =>{
-		res.status(500).send(task);
-	});
-});
+// userRouter.route('/:email/timeslots/:dotw&:start_time&:end_time').delete((req, res) => {
+// 	var values ={
+// 		email: req.params.email,
+// 		day_of_the_week: req.params.dotw,
+// 		start_time: req.params.start_time,
+// 		end_time: req.params.end_time
+// 	};
+// 	UserTimeSlots.destroy({
+// 		where: values
+// 	})
+// 	.then(task =>{
+// 		res.sendStatus(200);
+// 	})
+// 	.catch(task =>{
+// 		res.status(500).send(task);
+// 	});
+// });
 
 module.exports = userRouter;
