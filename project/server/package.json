@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon ./bin/www",
-    "test": "sh ./test.sh"
+    "test:small": "sh ../db/reset_smalldb.sh && mocha --exit;",
+    "test:large": "sh ../db/reset_largedb.sh && mocha --exit;",
+    "test": "npm run test:small && npm run test:large"
   },
   "author": "",
   "license": "ISC",

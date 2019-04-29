@@ -35,7 +35,6 @@ describe('Unit testing the /projects route', function() {
       return request(app)
         .get('/api/projects')
         .then(function(response){
-            project_count = response.body.length;
             assert.equal(response.status, 200);
         });
     });
@@ -45,8 +44,11 @@ describe('Unit testing the /projects route', function() {
         .post('/api/projects/').send(test_project)
         .then(function(response){
             return request(app)
-                .get('/api/projects/' + (project_count+1))
+                .get('/api/projects/search-substr/test_project')
                 .then(function(res2){
+                    res2.body = res2.body[0]
+                    project_pid = res2.body["pid"];
+                    prev_pid = project_pid - 1;
                     assert.equal(res2.status, 200);
                     assert.equal(res2.body["project_name"], "test_project");
                     assert.equal(res2.body["curr_capacity"], 1);              
@@ -64,7 +66,7 @@ describe('Unit testing the /projects route', function() {
     });
     it('should add user to a project', function() {
       return request(app)
-                .post('/api/projects/' + project_count +'/users/test_user')
+                .post('/api/projects/' + prev_pid +'/users/test_user')
                 .then(function(res2){
                     assert.equal(res2.status, 200);
                     joined_project = res2.body;
@@ -75,16 +77,15 @@ describe('Unit testing the /projects route', function() {
         return request(app)
                 .get('/api/projects/test_user/joined')
                 .then(function(res2){
-                    console.log(res2.body);
+                    console.log(res2.body)
                     assert.equal(res2.status, 200);
-                    assert.equal(res2.body[0]["pid"], project_count);
-                    assert.equal(res2.body[1]["pid"], (project_count+1));
+                    assert.equal(res2.body.length, 2);
                 });
     });
 
     it('should get a specific project', function() {
        return request(app)
-                .get('/api/projects/' + (project_count+1))
+                .get('/api/projects/' + project_pid)
                 .then(function(res2){
                     assert.equal(res2.status, 200);
                     assert.equal(res2.body["project_name"], "test_project");
@@ -104,13 +105,13 @@ describe('Unit testing the /projects route', function() {
 
     it('should remove user from a project', function() {
        return request(app)
-                .delete('/api/projects/' + project_count +'/users/test_user')
+                .delete('/api/projects/' + prev_pid +'/users/test_user')
                 .then(function(res2){
                     return request(app)
                     .get('/api/projects/test_user/joined')
                     .then(function(res2){
                         assert.equal(res2.status, 200);
-                        assert.equal(res2.body[0]["pid"], (project_count+1));
+                        assert.equal(res2.body[0]["pid"], project_pid);
 
                     });
             });
@@ -119,10 +120,10 @@ describe('Unit testing the /projects route', function() {
     it('should update a project', function() {
         update_data = {project_name: "updated"}
         return request(app)
-        .put('/api/projects/' + (project_count+1)).send(update_data)
+        .put('/api/projects/' + project_pid).send(update_data)
         .then(function(response){
             return request(app)
-                .get('/api/projects/' + (project_count+1))
+                .get('/api/projects/' + project_pid)
                 .then(function(res2){
                     assert.equal(res2.status, 200);
                     assert.equal(res2.body["project_name"], "updated");
@@ -134,12 +135,11 @@ describe('Unit testing the /projects route', function() {
 
     it('delete a project', function() {
        return request(app)
-        .delete('/api/projects/' + (project_count+1))
+        .delete('/api/projects/' + project_pid)
         .then(function(response){
             return request(app)
-                .get('/api/projects/' + (project_count+1))
+                .get('/api/projects/' + project_pid)
                 .then(function(res2){
-                    console.log(res2.body.length);
                     assert.equal(res2.status, 200);
                     assert.deepEqual(res2.body, {});
             });
