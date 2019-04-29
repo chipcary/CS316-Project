@@ -46,7 +46,7 @@ describe('Unit testing the /projects route', function() {
             return request(app)
                 .get('/api/projects/search-substr/test_project')
                 .then(function(res2){
-                    res2.body = res2.body[0]
+                    res2.body = res2.body.rows[0]
                     project_pid = res2.body["pid"];
                     prev_pid = project_pid - 1;
                     assert.equal(res2.status, 200);

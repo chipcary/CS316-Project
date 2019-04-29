@@ -15,8 +15,10 @@ projectRouter.route('/').get((req, res) => {
 	if(page){
 		options["offset"] = (page-1)*LIMIT;
 	}
-	Project.findAll(options)
+	Project.findAndCountAll(options)
 	.then(results => {
+		var pages = Math.ceil(results.count/LIMIT);
+		results["pages"] = pages;
 		res.send(results);
 	})
 	.catch(error => {
@@ -37,9 +39,11 @@ projectRouter.route('/search-substr/:sub').get((req, res) => {
 	if(page){
 		options["offset"] = (page-1)*LIMIT;
 	}
-	Project.findAll(options)
-	.then(projects => {
-		res.send(projects);
+	Project.findAndCountAll(options)
+	.then(results => {
+		var pages = Math.ceil(results.count/LIMIT);
+		results["pages"] = pages;
+		res.send(results);
 	})
 	.catch(error => {
 		res.send(error);
@@ -58,9 +62,11 @@ projectRouter.route('/search-tag/:tag').get((req, res) => {
 	if(page){
 		options["offset"] = (page-1)*LIMIT;
 	}
-	Project.findAll(options)
-	.then(projects => {
-		res.send(projects);
+	Project.findAndCountAll(options)
+	.then(results => {
+		var pages = Math.ceil(results.count/LIMIT);
+		results["pages"] = pages;
+		res.send(results);
 	})
 	.catch(error => {
 		res.send(error);

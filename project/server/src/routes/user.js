@@ -18,9 +18,12 @@ userRouter.route('/').get((req, res) => {
 	if(page){
 		options["offset"] = (page-1)*LIMIT;
 	}
-	User.findAll(options)
-	.then(email => {
-		res.send(email);
+	User.findAndCountAll(options)
+	.then(results => {
+		var pages = Math.ceil(results.count/LIMIT);
+		results["pages"] = pages;
+		console.log(results);
+		res.send(results);
 	})
 	.catch(error => {
 		res.send(error);
@@ -39,9 +42,12 @@ userRouter.route('/search-substr/:sub').get((req, res) => {
 	if(page){
 		options["offset"] = (page-1)*LIMIT;
 	}
-	User.findAll(options)
-	.then(users => {
-		res.send(users);
+	User.findAndCountAll(options)
+	.then(results => {
+		var pages = Math.ceil(results.count/LIMIT);
+		results["pages"] = pages;
+		console.log(results);
+		res.send(results);
 	})
 	.catch(error => {
 		res.send(error);
