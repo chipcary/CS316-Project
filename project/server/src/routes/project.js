@@ -24,7 +24,8 @@ projectRouter.route('/search-substr/:sub').get((req, res) => {
 			project_name: {
 				[Op.iLike]: '%' + req.params.sub + '%'
 			}
-		}
+		},
+		limit: LIMIT
 	})
 	.then(projects => {
 		res.send(projects);
@@ -37,7 +38,8 @@ projectRouter.route('/search-tag/:tag').get((req, res) => {
 	Project.findAll({
 		where:{
 			tag : req.params.tag
-		}
+		},
+		limit: LIMIT
 	})
 	.then(projects => {
 		res.send(projects);
