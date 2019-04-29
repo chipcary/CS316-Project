@@ -42,6 +42,8 @@ CREATE TABLE UserJoinsProject
  PRIMARY KEY(user_email, pid)
  );
 
+CREATE INDEX ON Projects(tag);
+
 CREATE FUNCTION TF_Capacity_Update() RETURNS TRIGGER AS $$
 BEGIN
     IF EXISTS(SELECT * FROM Projects WHERE NEW.pid = Projects.pid AND Projects.curr_capacity = Projects.goal_capacity) THEN
