@@ -11,12 +11,14 @@ const initialState = {
 export default function(state = initialState, action){
 	switch(action.type) {
 		case SET_CURRENT_USER:
+		    		console.log('22FUCK THIS SHIT');
 			return {
 				...state,
 				isAuthenticated: !isEmpty(action.payload),
 				user: action.payload
 			};
 		default:
+			console.log('FUCK THIS SHIT');
 			return state;
 	}
 }

@@ -14,6 +14,7 @@ import {Provider} from 'react-redux';
 import {setCurrentUser, logoutUser} from './action';
 import setAuthToken from './setAuthToken';
 import configureStore from "./configureStore";
+import RegisterPage from "./RegisterPage";
 
 const store = configureStore();
 
@@ -65,6 +66,7 @@ class App extends React.Component {
           <Provider store={store}>
           <Router>
             <div className = "App">
+              <Route exact path="/" component={RegisterPage}/>
               <Route exact path="/login" component={LoginPage}/>
               <Route exact path="/userSearch" component={UsersSearchPage}/>
               <Route exact path="/projectSearch" component={ProjectSearchPage}/>

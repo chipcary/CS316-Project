@@ -9,6 +9,7 @@ const UserCreds = require('../models').UserCreds;
 var Sequelize = require('sequelize');
 const Op = Sequelize.Op
 
+var jwt = require('jsonwebtoken');
 var bcrypt = require('bcrypt');
 
 //get all users. for testing only
@@ -43,7 +44,7 @@ userRouter.route('/login/:email&:password').get((req, res) => {
 		bcrypt.compare(req.params.password, creds.hash, function(err, match) {
 		  if(match) {
 		  	const payload = {
-		  		name: user.name,
+		  		email: req.params.email,
 		  	}
 		  	jwt.sign(
 		  		payload,
@@ -84,7 +85,10 @@ userRouter.route('/login/:email&:password').put((req, res) => {
 					hash: hash
 				})
 				.then(task =>{
-					res.status(200).send("password entry created for user: " + req.params.email);
+					var toSend = {}
+					toSend.success = true;
+					toSend.create = true;
+					res.send(toSend);
 				})
 				.catch(task =>{
 					res.status(500).send(task);
@@ -94,7 +98,10 @@ userRouter.route('/login/:email&:password').put((req, res) => {
 				user.hash = hash;
 				user.save()
 				.then(task =>{
-					res.status(200).send("password updated for user: " + req.params.email);
+					var toSend = {}
+					toSend.success = true;
+					toSend.update = true;
+					res.send(toSend);
 				})
 				.catch(task =>{
 					res.status(500).send(task);
@@ -133,10 +140,28 @@ userRouter.route('/:email&:name&:city&:state').post((req, res) => {
 		state: req.params.state
 	})
 	.then(task =>{
-		res.status(200).send(task);
+		const payload = {
+			email: req.params.email,
+		}
+		jwt.sign(
+			payload,
+			"secret",
+			{
+				expiresIn: 31556926
+			},
+			(err, token) => {
+				var toSend = {};
+				toSend.success = true;
+				toSend.token = "Bearer " + token;
+				console.log(toSend);
+				res.send(toSend);
+			}
+		);
 	})
 	.catch(task =>{
-		res.status(500).send(task);
+		var toSend = {};
+		toSend.success = false;
+		res.send(toSend);
 	});
 });
 
