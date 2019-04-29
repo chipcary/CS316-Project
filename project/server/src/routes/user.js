@@ -14,7 +14,12 @@ var bcrypt = require('bcrypt');
 const LIMIT = 100;
 //get all users. for testing only
 userRouter.route('/').get((req, res) => {
-	User.findAll({limit: LIMIT})
+	var page = req.query.page;
+	var options = {limit: LIMIT};
+	if(page){
+		options["offset"] = (page-1)*LIMIT;
+	}
+	User.findAll(options)
 	.then(email => {
 		res.send(email);
 	})
@@ -23,14 +28,19 @@ userRouter.route('/').get((req, res) => {
 	});
 });
 userRouter.route('/search-substr/:sub').get((req, res) => {
-	User.findAll({
+	var page = req.query.page;
+	var options = {
 		where:{
 			name: {
 				[Op.iLike]: '%' + req.params.sub + '%'
 			}
 		},
 		limit: LIMIT
-	})
+	};
+	if(page){
+		options["offset"] = (page-1)*LIMIT;
+	}
+	User.findAll(options)
 	.then(users => {
 		res.send(users);
 	})

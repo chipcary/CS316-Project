@@ -10,7 +10,12 @@ const Op = Sequelize.Op
 const LIMIT = 100;
 //all projects
 projectRouter.route('/').get((req, res) => {
-	Project.findAll({limit: LIMIT})
+	var page = req.query.page;
+	var options = {limit: LIMIT};
+	if(page){
+		options["offset"] = (page-1)*LIMIT;
+	}
+	Project.findAll(options)
 	.then(results => {
 		res.send(results);
 	})
@@ -18,15 +23,21 @@ projectRouter.route('/').get((req, res) => {
 		res.send(error);
 	});
 });
+
 projectRouter.route('/search-substr/:sub').get((req, res) => {
-	Project.findAll({
+	var page = req.query.page;
+	var options = {
 		where:{
 			project_name: {
 				[Op.iLike]: '%' + req.params.sub + '%'
 			}
 		},
 		limit: LIMIT
-	})
+	};
+	if(page){
+		options["offset"] = (page-1)*LIMIT;
+	}
+	Project.findAll(options)
 	.then(projects => {
 		res.send(projects);
 	})
@@ -35,12 +46,17 @@ projectRouter.route('/search-substr/:sub').get((req, res) => {
 	});
 });
 projectRouter.route('/search-tag/:tag').get((req, res) => {
-	Project.findAll({
+	var page = req.query.page;
+	var options = {
 		where:{
 			tag : req.params.tag
 		},
 		limit: LIMIT
-	})
+	};
+	if(page){
+		options["offset"] = (page-1)*LIMIT;
+	}
+	Project.findAll(options)
 	.then(projects => {
 		res.send(projects);
 	})
