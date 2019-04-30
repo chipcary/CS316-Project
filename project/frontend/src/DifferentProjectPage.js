@@ -30,6 +30,7 @@ export default class DifferentProjectPage extends React.Component{
 		this.loadCreatorFromServer = this.loadCreatorFromServer.bind(this);
 		this.leaveProject = this.leaveProject.bind(this);
 		this.joinProject = this.joinProject.bind(this);
+		this.deleteProject = this.deleteProject.bind(this);
 	}
 /*
 	async determineUser(){
@@ -129,10 +130,20 @@ export default class DifferentProjectPage extends React.Component{
 	}
 
 	async joinProject(){
+		if (this.state.project.curr_capacity == this.state.project.goal_capacity){
+			alert('Project already full');
+			return;
+		}
 		var path = '/api/projects/' + this.state.project_id + '/users/' + this.state.user_email;
 		var leave = await fetch(path, {method: 'POST'});
 		this.loadMembersFromServer();
 		this.loadDataFromServer();
+	}
+
+	async deleteProject(){
+		var path = '/api/projects/' + this.state.project_id;
+		var deleted = await fetch(path, {method: 'DELETE'});
+		alert('Successfully deleted');
 	}
 
 	render() {
@@ -186,11 +197,17 @@ export default class DifferentProjectPage extends React.Component{
 	                 </div>: " "}
 
 	             {this.state.editable == true ?
+	             	<div>
 	             	<div className="paddedDiv">
 	             		<Button>
 	             			Edit Project
 	             		</Button>
-	             	</div> : " "}
+	             	</div> 
+	             	<div className="paddedDiv">
+	             		<Button onClick={this.deleteProject}>
+	             			Delete Project
+	             		</Button>
+	             	</div></div>: " "}
 	             {this.state.canJoin == true ?
 	             	<div className="paddedDiv">
 	             		<Button onClick={this.joinProject}>

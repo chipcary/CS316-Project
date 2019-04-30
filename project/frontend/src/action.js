@@ -27,6 +27,7 @@ export const loginUser = userData => dispatch => {
       }
     })
     .catch(err => {
+      alert('Invalid Email/Password');
       dispatch({
         payload: err.response.data
       })
