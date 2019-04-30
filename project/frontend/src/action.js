@@ -63,6 +63,7 @@ export const registerUser = userData => dispatch => {
         const decoded = jwt_decode(token);
         console.log('helo5');
         dispatch(setCurrentUser(decoded));
+        alert('Account successfully created!')
       } else {
         alert('An account with this email already exists. Please choose a different email.');
       }

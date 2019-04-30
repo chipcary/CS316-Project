@@ -11,6 +11,7 @@ export default class AuthRoleValidation{
 	}
 
 	static async determineUser(){
+		console.log('gets here');
 		if(localStorage != null){
 			const decoded = jwt_decode(localStorage.getItem("jwtToken"));
 			const email = decoded.email;

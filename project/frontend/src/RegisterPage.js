@@ -20,6 +20,7 @@ class RegisterPage extends Component {
 
 	componentDidMount() {
 		if (this.props.auth.isAuthenticated) {
+			console.log(this.props.auth);
 			this.props.history.push("/userSearch")
 		}
 	}

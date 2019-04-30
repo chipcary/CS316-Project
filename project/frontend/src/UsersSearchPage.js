@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import PageTable from './PageTable';
 import * as Constants from './Constants';
 import GeneralNavBar from './GeneralNavBar';
+import TablePagination from './TablePagination';
 
 export default class UsersSearchPage extends React.Component {
 	constructor(props) {
@@ -18,8 +19,6 @@ export default class UsersSearchPage extends React.Component {
 			detail_view_action:'',
 			data:[],
 			currentPage: 0,
-			previousPage: 0,
-			pageSize: props.simple ? 4:20,
 			pagesCount : 0,
 			filters: {
 				'keyword': '',
@@ -55,13 +54,16 @@ export default class UsersSearchPage extends React.Component {
 	async loadDataFromServer() {
 		console.log(this.state.filters['keyword'] == "")
 		if(this.state.filters['keyword'] == ""){
-			var users = await fetch('/api/users/' , { method: 'GET' })
+			var currPage = Number(this.state.currentPage) + 1;
+			var path = '/api/users/?page=' + currPage;
+			var users = await fetch(path , { method: 'GET' })
 				.then(data => data.json())
 				.then((res) => {
 					console.log(res);
 					console.log(JSON.stringify(res));
 					this.setState({
 						data: res.rows,
+						pagesCount: res.pages,
 					});
 				});
 		} else {
@@ -77,6 +79,21 @@ export default class UsersSearchPage extends React.Component {
 				});
 		}
 	}
+
+	handlePageClick = (e, index) => {
+		e.preventDefault();
+		if(index < 0 || index > this.state.pagesCount){
+			return;
+		}
+		else {
+			this.setState({
+				currentPage: index,
+			});
+			this.loadDataFromServer();
+		}
+	}
+
+
 /*
 	async checkCurrentPageInBounds(dataResAll){
 		var prev = this.state.previousPage;
@@ -164,6 +181,12 @@ export default class UsersSearchPage extends React.Component {
                         onFilterValueSelection = {this.onFilterValueSelection}
                         onFilterValueChange = {this.onFilterValueChange}
                         onRemoveFilter = {this.onRemoveFilter} />
+                </div>
+                <div>
+                <TablePagination
+                	currentPage={this.state.currentPage}
+                	pagesCount= {this.state.pagesCount}
+                	handlePageClick={this.handlePageClick} />
                 </div>
             </div>
         )

@@ -28,11 +28,11 @@ export default class UserSettingsPage extends React.Component {
 
 	async loadDataFromServer(){
 		var email = await AuthRoleValidation.determineUser();
-		var path = '/api/users/' + email;
+		console.log(email);
+		var path = '/api/users/' + email[0].email;
 		var user = await fetch(path, {method: 'GET'})
-			.then(data => data.json())
 			.then((res) => {
-				console.log(res);
+				console.log(res)
 				var interest1 = "";
 				var interest2 = "";
 				var interest3 = ""
