@@ -8,7 +8,17 @@ var Sequelize = require('sequelize');
 const Op = Sequelize.Op
 
 const LIMIT = 100;
-//all projects
+
+/*
+all projects
+query params: 
+page - specifies the page of results to return
+
+results:
+count - the number of rows in projects
+rows
+pages - the number of pages
+*/
 projectRouter.route('/').get((req, res) => {
 	var page = req.query.page;
 	var options = {limit: LIMIT};
@@ -26,6 +36,16 @@ projectRouter.route('/').get((req, res) => {
 	});
 });
 
+/*
+search all project_names for a substring
+query params: 
+page - specifies the page of results to return
+
+results:
+count - the number of rows in projects
+rows - the matching tuples
+pages - the number of pages
+*/
 projectRouter.route('/search-substr/:sub').get((req, res) => {
 	var page = req.query.page;
 	var options = {
@@ -49,6 +69,17 @@ projectRouter.route('/search-substr/:sub').get((req, res) => {
 		res.send(error);
 	});
 });
+
+/*
+search all project tags for a substring
+query params: 
+page - specifies the page of results to return
+
+results:
+count - the number of rows in projects
+rows - the matching tuples
+pages - the number of pages
+*/
 projectRouter.route('/search-tag/:tag').get((req, res) => {
 	var page = req.query.page;
 	var options = {
@@ -72,6 +103,7 @@ projectRouter.route('/search-tag/:tag').get((req, res) => {
 		res.send(error);
 	});
 });
+
 //get all projects created by a user
 projectRouter.route('/:creator_email/created').get((req, res) => {
 	Project.findAll({
@@ -130,12 +162,28 @@ projectRouter.route('/:pid').get((req, res) => {
 	});
 });
 
+/*
+get recommended projects for a user
+matches city, state
+only returns projects that happen in the future
+only return projects with remaining capacity
+sort by weighting matching tags
 
-//reccomended projects for a user
+query params:
+substr - filter project name by substr
+*/
 projectRouter.route('/:email/best').get((req, res) => {
-	User.getRecProjects(req.params.email, res);
+	var substr = req.query.substr;
+	if(substr){
+		User.getRecProjectsForSubstring(req.params.email, '%' + substr + '%', res);
+	}
+	else{
+		User.getRecProjects(req.params.email, res);
+	}
 });
 
+
+//get all users that are part of the project
 projectRouter.route('/:pid/users/').get((req, res) => {
 	UserJoinsProject.findAll({
 		where: {
@@ -182,7 +230,22 @@ projectRouter.route('/:pid/users/:user_email').delete((req, res) => {
 	});
 });
 
-//create new project
+/*
+create project
+request data format
+Note: only description can be omitted
+	{
+        "project_name":"test_project",
+        "tag" : "b",
+        "start_date": "2019-10-10",
+        "end_date": "2019-10-11",
+        "curr_capacity": "0",
+        "goal_capacity": "10",
+        "city": "Durham",
+        "state": "NC",
+        "description": "example desc"
+    }
+*/
 projectRouter.route('/')
 .post((req, res) => {
 	project_data = req.body;
@@ -197,7 +260,22 @@ projectRouter.route('/')
 	});
 });
 
-//update project
+/*
+update project
+request data format
+Note: any field can be omitted
+	{
+        "project_name":"test_project",
+        "tag" : "b",
+        "start_date": "2019-10-10",
+        "end_date": "2019-10-11",
+        "curr_capacity": "0",
+        "goal_capacity": "10",
+        "city": "Durham",
+        "state": "NC",
+        "description": "example desc"
+    }
+*/
 projectRouter.route('/:pid')
 .put((req, res) => {
 	Project.findByPk(req.params.pid)
