@@ -38,7 +38,7 @@ describe('Unit testing the /users route', function() {
 
     it('should update user info', function(){
         return request(app)
-        .put('/api/users/test_user/test_change&testville&NC')
+        .put('/api/users/test_user&test_change&testville&NC')
         .then(function(response){
             return request(app)
                 .get('/api/users/test_user')

@@ -12,6 +12,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 //app.disable('etag');
 
+app.disable('etag');
+
 
 //setup routing
 var projectRouter = require('./src/routes/project');
