@@ -7,7 +7,7 @@ import TablePagination from './TablePagination';
 import AuthRoleValidation from './AuthRoleValidation'
 import {Input} from 'reactstrap';
 
-export default class UsersSearchPage extends React.Component {
+export default class RecommendedUsersSearchPage extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -56,11 +56,12 @@ export default class UsersSearchPage extends React.Component {
 
 
 	async loadDataFromServer() {
-
-		console.log(this.state.filters['keyword'] == "")
-		if(this.state.filters['keyword'] == ""){
+		var user = await AuthRoleValidation.determineUser();
+		var email = user[0].email;
+		console.log('gets here');
+		if(this.state.filters['keyword'] != ""){
 			var currPage = Number(this.state.currentPage) + 1;
-			var path = '/api/users/?page=' + currPage;
+			var path = '/api/users/' + email + '/match?substr=' + this.state.filters['keyword'] + '&loc=true' + '&page=' + currPage;
 			var users = await fetch(path , { method: 'GET' })
 				.then(data => data.json())
 				.then((res) => {
@@ -73,7 +74,7 @@ export default class UsersSearchPage extends React.Component {
 				});
 		} else {
 			var currPage = Number(this.state.currentPage) + 1;
-			var path = '/api/users/search-substr/' + this.state.filters['keyword'] + "/?page="+  currPage;
+			var path = '/api/users/' + email +'/match?page=' +  currPage;
 			var users = await fetch(path, {method: 'GET'})
 				.then(data => data.json())
 				.then((res) => {

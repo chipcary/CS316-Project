@@ -21,6 +21,7 @@ export default class DifferentProjectPage extends React.Component{
 			table_columns: ["Name", "City", "State"],
 			table_properties: ["name", "city", "state"],
 			editable: false,
+			user_email: null,
 		}
 
 		this.determineUser = this.determineUser.bind(this);
@@ -33,11 +34,15 @@ export default class DifferentProjectPage extends React.Component{
 	async determineUser(){
 		var user = AuthRoleValidation.determineUser();
 		var email = user[0].email;
+		console.log(email);
 		if(email == this.state.creator_email){
 			this.setState({
 				editable:true,
 			})
 		}
+		this.setState({
+			user_email: email,
+		})
 	}
 
 	async loadDataFromServer(){
@@ -75,6 +80,9 @@ export default class DifferentProjectPage extends React.Component{
 	}
 
 	async loadMembersFromServer(){
+		var user = AuthRoleValidation.determineUser();
+		var email = user[0].email;
+		var alreadyPresent = false;
 		var path = '/api/projects/' + this.state.project_id + "/members";
 		var members = await fetch(path, {method: 'GET'})
 			.then(data => data.json())
@@ -82,10 +90,22 @@ export default class DifferentProjectPage extends React.Component{
 				var tempArr = []
 				for(var i = 0; i < res.length; i++){
 					tempArr.push(res[i]["User"]);
+					if(res[i]["User"].email == email) alreadyPresent = true;
 				}
 				this.setState({
 					members: tempArr,
 				});
+				if(alreadyPresent){
+					this.setState({
+						canJoin: false,
+						canLeave: true,
+					})
+				} else {
+					this.setState({
+						canJoin: true,
+						canLeave: false,
+					})
+				}
 			});
 	}
 
@@ -143,6 +163,19 @@ export default class DifferentProjectPage extends React.Component{
 	             	<div className="paddedDiv">
 	             		<Button>
 	             			Edit Project
+	             		</Button>
+	             	</div> : " "}
+	             {this.state.canJoin == true ?
+	             	<div className="paddedDiv">
+	             		<Button>
+	             			Join Project
+	             		</Button>
+	             	</div> : " "}
+
+	             {this.state.canLeave == true ?
+	             	<div className="paddedDiv">
+	             		<Button>
+	             			Leave Project
 	             		</Button>
 	             	</div> : " "}
 

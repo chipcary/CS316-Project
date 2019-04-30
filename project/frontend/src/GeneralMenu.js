@@ -28,12 +28,16 @@ export default class GeneralMenu extends React.Component {
 		      <Link to='/userSearch'>
 		        <MenuItem onClick={this.close} style = {{color: 'rgb(0,188,212)'}}className = "item" primaryText={'Search for Users'}></MenuItem>
 			  </Link>
+			  <Link to='/recommendedUserSearch'>
+		        <MenuItem onClick={this.close} style = {{color: 'rgb(0,188,212)'}}className = "item" primaryText={'Search for Recommended Users'}></MenuItem>
+			  </Link>	
 			  <Link to='/projectSearch'>
 			  	<MenuItem onClick={this.close} style = {{color: 'rgb(0,188,212)'}}className = "item" primaryText={'Search for Projects'}></MenuItem>
 		      </Link>
 		      <Link to='/userSettings'>
 		        <MenuItem onClick={this.close} style = {{color: 'rgb(0,188,212)'}}className = "item" primaryText={'User Settings'}></MenuItem>
-			  </Link>		      
+			  </Link>	
+
 		    </Drawer>
 
 		  </div>

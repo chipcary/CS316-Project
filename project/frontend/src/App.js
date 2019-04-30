@@ -16,6 +16,8 @@ import setAuthToken from './setAuthToken';
 import configureStore from "./configureStore";
 import RegisterPage from "./RegisterPage";
 import UserSettingsPage from "./UserSettingsPage";
+import RecommendedUsersSearchPage from "./RecommendedUsersSearchPage";
+
 
 const store = configureStore();
 
@@ -74,6 +76,7 @@ class App extends React.Component {
               <Route exact path="/userSettings" component={UserSettingsPage}/>
               <Route path="/users/:user_email" component={DifferentUserPage}/>
               <Route path="/projects/:pid" component={DifferentProjectPage}/>
+              <Route exact path="/recommendedUserSearch" component={RecommendedUsersSearchPage}/>
             </div>
           </Router>
           </Provider>
