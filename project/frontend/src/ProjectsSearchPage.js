@@ -46,6 +46,7 @@ export default class ProjectSearchPage extends React.Component {
 	async componentDidUpdate(prevProps, prevState){
 		if(this.state.filterChange){
 			await this.loadDataFromServer();
+			this.state.filterChange = false;
 		}
 	}
 

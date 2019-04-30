@@ -164,7 +164,7 @@ userRouter.route('/:email').get((req, res) => {
 		res.send(email);
 	})
 	.catch(error => {
-		res.send(error);
+		res.status(500).send(error);
 	});
 });
 
@@ -193,6 +193,7 @@ userRouter.route('/:email/match').get((req, res) => {
 				pages: 0
 			};
 			res.send(results);
+			return;
 		}
 		var valid_interests = [];
 		if(user.UserInterest.interest1 && user.UserInterest.interest1 !== ''){
