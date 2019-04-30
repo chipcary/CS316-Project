@@ -11,7 +11,17 @@ const Op = Sequelize.Op
 var jwt = require('jsonwebtoken');
 var bcrypt = require('bcrypt');
 const LIMIT = 100;
-//get all users
+
+/*
+get all users
+query params: 
+page - specifies the page of results to return
+
+results:
+count - the number of rows in users
+rows
+pages - the number of pages
+*/
 userRouter.route('/').get((req, res) => {
 	var page = req.query.page;
 	var options = {limit: LIMIT};
@@ -28,6 +38,17 @@ userRouter.route('/').get((req, res) => {
 		res.send(error);
 	});
 });
+
+/*
+search all user names for a substring
+query params: 
+page - specifies the page of results to return
+
+results:
+count - the number of matching rows
+rows - the matching tuples
+pages - the number of pages
+*/
 userRouter.route('/search-substr/:sub').get((req, res) => {
 	var page = req.query.page;
 	var options = {
@@ -51,7 +72,9 @@ userRouter.route('/search-substr/:sub').get((req, res) => {
 		res.send(error);
 	});
 });
+
 //validate user password
+//returns 403 on failure
 userRouter.route('/login/:email&:password').get((req, res) => {
 	UserCreds.findByPk(req.params.email)
 	.then(creds => {
@@ -86,6 +109,7 @@ userRouter.route('/login/:email&:password').get((req, res) => {
 		res.send(toSend);
 	});
 });
+
 //set or update user password
 userRouter.route('/login/:email&:password').put((req, res) => {
 	//bcrypt automatically salts and hashes passwords
@@ -144,9 +168,16 @@ userRouter.route('/:email').get((req, res) => {
 	});
 });
 
-//get users with matching interests
+/*get users with matching interests
+
+query params:
+substr - filter by matching substring in name
+loc - only include results with matching city, state when true
+page - specify which page to return
+*/
 userRouter.route('/:email/match').get((req, res) => {
-	var match_location = req.query.loc
+	var substr = req.query.substr;
+	var match_location = req.query.loc;
 	var email = req.params.email;
 	User.findOne({
 		where: {
@@ -181,6 +212,9 @@ userRouter.route('/:email/match').get((req, res) => {
 				}
 			}
 		};
+		if(substr){
+			options["where"]["name"] = {[Op.iLike] : '%' + substr + '%'};
+		}
 		if(match_location){
 			options["where"]["city"] = user.city;
 			options["where"]["state"] = user.state;
@@ -188,6 +222,7 @@ userRouter.route('/:email/match').get((req, res) => {
 		if(page){
 			options["offset"] = (page-1)*LIMIT;
 		}
+		console.log(options);
 		User.findAndCountAll(options)
 		.then(results => {
 			var pages = Math.ceil(results.count/LIMIT);
@@ -306,40 +341,5 @@ userRouter.route('/:email/interests').put((req, res) => {
 	});
 });
 
-//add timeslots
-// userRouter.route('/:email/timeslots/:dotw&:start_time&:end_time').post((req, res) => {
-// 	var values ={
-// 		email: req.params.email,
-// 		day_of_the_week: req.params.dotw,
-// 		start_time: req.params.start_time,
-// 		end_time: req.params.end_time
-// 	};
-// 	UserTimeSlots.create(values)
-// 	.then(task =>{
-// 		res.status(200).send(task);
-// 	})
-// 	.catch(task =>{
-// 		res.status(500).send(task);
-// 	});
-// });
-
-//delete timeslot
-// userRouter.route('/:email/timeslots/:dotw&:start_time&:end_time').delete((req, res) => {
-// 	var values ={
-// 		email: req.params.email,
-// 		day_of_the_week: req.params.dotw,
-// 		start_time: req.params.start_time,
-// 		end_time: req.params.end_time
-// 	};
-// 	UserTimeSlots.destroy({
-// 		where: values
-// 	})
-// 	.then(task =>{
-// 		res.sendStatus(200);
-// 	})
-// 	.catch(task =>{
-// 		res.status(500).send(task);
-// 	});
-// });
 
 module.exports = userRouter;
