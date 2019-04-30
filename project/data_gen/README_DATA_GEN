@@ -1,2 +1,11 @@
-We first used a service called generatedata to produce 10,000 unique email addresses, as well as to produce thousands of different cities
-across the United States, along with their states. We then used Python
+We first used a service called generatedata to produce 10,000 unique email addresses and strings for user passwords, as well as to produce 
+thousands of different cities across the United States, along with their states. This list of unique emails was necessary to create
+realistic data for all the relations in our database. Moreover, with all the data being randomly produced for the Users Relation,
+we were able to create a representative population of users in our database whose information was randomly generated. 
+
+There were many variables whose values were chosen randomly from a list created by us in Python. For example, we produced a possible range
+of outcomes for variables like the User's interests, the names of the Projects and the project's current and goal capacity. Using the csv
+package in python, we wrote through all the relations and chose values for each variable randomly through the random.choice() function. 
+
+The testing process helped identify many smaller problems that existed with the original dataset production. Through diagnosing our errors,
+we were able to produce a realistic dataset that would run properly given the constraints outlined by our database. 
