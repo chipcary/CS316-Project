@@ -61,7 +61,7 @@ export default class RecommendedUsersSearchPage extends React.Component {
 		console.log('gets here');
 		if(this.state.filters['keyword'] != ""){
 			var currPage = Number(this.state.currentPage) + 1;
-			var path = '/api/users/' + email + '/match?substr=' + this.state.filters['keyword'] + '&loc=true' + '&page=' + currPage;
+			var path = '/api/users/' + email + '/match?substr=' + this.state.filters['keyword'] + '&page=' + currPage;
 			var users = await fetch(path , { method: 'GET' })
 				.then(data => data.json())
 				.then((res) => {
@@ -79,7 +79,6 @@ export default class RecommendedUsersSearchPage extends React.Component {
 				.then(data => data.json())
 				.then((res) => {
 					console.log(res);
-					console.log(JSON.stringify(res));
 					this.setState({
 						data: res.rows,
 						pagesCount: res.pages,
