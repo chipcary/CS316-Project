@@ -18,6 +18,7 @@ import RegisterPage from "./RegisterPage";
 import UserSettingsPage from "./UserSettingsPage";
 import RecommendedUsersSearchPage from "./RecommendedUsersSearchPage";
 import NewProjectPage from './NewProjectPage';
+import RecommendedProjectSearch from "./RecommendedProjectSearchPage";
 
 const store = configureStore();
 
@@ -80,6 +81,7 @@ class App extends React.Component {
               <Route path="/projects/:pid" component={DifferentProjectPage}/>
               <Route exact path="/recommendedUserSearch" component={RecommendedUsersSearchPage}/>
               <Route exact path="/createProject" component={NewProjectPage}/>
+              <Route exact path="/recommendedProjectSearch" component={RecommendedProjectSearch}/>
             </div>
           </Router>
           </Provider>

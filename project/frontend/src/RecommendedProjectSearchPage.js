@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import PageTable from './PageTable';
 import * as Constants from './Constants';
 import GeneralNavBar from './GeneralNavBar';
+import AuthRoleValidation from "./AuthRoleValidation"
 
-export default class ProjectSearchPage extends React.Component {
+export default class RecommmendedProjectSearchPage extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -50,10 +51,11 @@ export default class ProjectSearchPage extends React.Component {
 	}
 
 	async loadDataFromServer() {
+		var user = await AuthRoleValidation.determineUser();
+		var email = user[0].email;
 		console.log(this.state.filters['keyword'] == "")
 		if(this.state.filters['keyword'] == ""){
-			var currPage = Number(this.state.currentPage) + 1;
-			var path = '/api/projects/?page=' + currPage;
+			var path = '/api/projects/' + email + '/best';
 			var users = await fetch(path , { method: 'GET' })
 				.then(data => data.json())
 				.then((res) => {
@@ -61,12 +63,11 @@ export default class ProjectSearchPage extends React.Component {
 					console.log(JSON.stringify(res));
 					this.setState({
 						data: res.rows,
-						pagesCount: res.pages,
+						pagesCount: 0,
 					});
 				});
 		} else {
-			var currPage = Number(this.state.currentPage) + 1;
-			var path = '/api/projects/search-substr/' + this.state.filters['keyword'] + "?page="+  currPage;			
+			var path = '/api/projects/' + email + "/best?substr=" + this.state.filters['keyword'];			
 			var users = await fetch(path, {method: 'GET'})
 				.then(data => data.json())
 				.then((res) => {
@@ -74,7 +75,7 @@ export default class ProjectSearchPage extends React.Component {
 					console.log(JSON.stringify(res));
 					this.setState({
 						data: res.rows,
-						pagesCount: res.pages,
+						pagesCount: 0,
 					});
 				});
 		}
@@ -153,7 +154,7 @@ export default class ProjectSearchPage extends React.Component {
 	render () {
 		return (
 			<div>
-			    <GeneralNavBar title={"Project Search Page"}></GeneralNavBar>
+			    <GeneralNavBar title={"Recommended Project Search Page"}></GeneralNavBar>
 				<div>
 					<PageTable
 						type={"Project"}
