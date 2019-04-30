@@ -37,7 +37,7 @@ module.exports = (sequelize, DataTypes) => {
     WHERE user_email = :email
   )
 )
-SELECT Projects.project_name, Projects.creator_email,
+SELECT Projects.pid, Projects.project_name, Projects.creator_email,
   Projects.tag, Projects.start_date, Projects.end_date, Projects.curr_capacity, 
   Projects.goal_capacity, Projects.city, Projects.state
 FROM UserInterests, available_projects, Projects
@@ -65,7 +65,7 @@ EXCEPT(
   WHERE user_email = :email
 )
 )
-SELECT Projects.project_name, Projects.creator_email,
+SELECT Projects.pid, Projects.project_name, Projects.creator_email,
 Projects.tag, Projects.start_date, Projects.end_date, Projects.curr_capacity, 
 Projects.goal_capacity, Projects.city, Projects.state
 FROM UserInterests, available_projects, Projects
