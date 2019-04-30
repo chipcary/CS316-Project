@@ -134,7 +134,7 @@ export default class DifferentUserPage extends React.Component {
 	                        onFilterValueSelection = {this.onFilterValueSelection}
 	                        onFilterValueChange = {this.onFilterValueChange}
 	                        onRemoveFilter = {this.onRemoveFilter} />
-	                </div> : this.state.user != null ? this.state.user.name + " has not created any projects" : ""}
+	                </div> : this.state.user != null ? this.state.user.name + " has not created any projects. " : ""}
 
                 {this.state.projects_joined.length > 0 ?
 					<div className="paddedDiv">
