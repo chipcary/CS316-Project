@@ -11,7 +11,7 @@ const Op = Sequelize.Op
 var jwt = require('jsonwebtoken');
 var bcrypt = require('bcrypt');
 const LIMIT = 100;
-//get all users. for testing only
+//get all users
 userRouter.route('/').get((req, res) => {
 	var page = req.query.page;
 	var options = {limit: LIMIT};
@@ -22,7 +22,6 @@ userRouter.route('/').get((req, res) => {
 	.then(results => {
 		var pages = Math.ceil(results.count/LIMIT);
 		results["pages"] = pages;
-		console.log(results);
 		res.send(results);
 	})
 	.catch(error => {
@@ -46,7 +45,6 @@ userRouter.route('/search-substr/:sub').get((req, res) => {
 	.then(results => {
 		var pages = Math.ceil(results.count/LIMIT);
 		results["pages"] = pages;
-		console.log(results);
 		res.send(results);
 	})
 	.catch(error => {
@@ -148,7 +146,6 @@ userRouter.route('/:email').get((req, res) => {
 
 //create a new user
 userRouter.route('/:email&:name&:city&:state').post((req, res) => {
-	console.log(req.params);
 	User.create({
 		email: req.params.email,
 		name: req.params.name,

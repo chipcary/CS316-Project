@@ -200,7 +200,6 @@ projectRouter.route('/')
 //update project
 projectRouter.route('/:pid')
 .put((req, res) => {
-	console.log(req.body);
 	Project.findByPk(req.params.pid)
 	.then(project => {
 		project_data = req.body;
@@ -209,7 +208,6 @@ projectRouter.route('/:pid')
 		for (var key in project_data){
 			project[key] = project_data[key];
 		}
-		console.log(project);
 		project.save()
 		.then(task =>{
 			res.status(200).send(task);
