@@ -14,7 +14,7 @@ describe('Unit testing the /users route', function() {
 
     it('should create a user', function(){
         return request(app)
-        .post('/api/users/test_user&test&testville&NC')
+        .post('/api/users/test_user&test&testville&NC&password')
         .then(function(response){
             return request(app)
                 .get('/api/users/test_user')
@@ -53,13 +53,9 @@ describe('Unit testing the /users route', function() {
     
     it('should validate user creds', function(){
         return request(app)
-        .put('/api/users/login/test_user&test_password')
-        .then(function(response){
-            return request(app)
-                .get('/api/users/login/test_user&test_password')
-                .then(function(res2){
-                    assert.equal(res2.status, 200);
-            });
+            .get('/api/users/login/test_user&password')
+            .then(function(res2){
+                assert.equal(res2.status, 200);
         });
     });
 

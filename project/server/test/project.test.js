@@ -18,8 +18,9 @@ describe('Unit testing the /projects route', function() {
         "state": "NC"
         };
         request(app)
-        .post('/api/users/test_user&test&testville&NC')
+        .post('/api/users/test_user&test&testville&NC&password')
         .then(function(response){
+            console.log(response);
             return;          
         });
     });
@@ -43,6 +44,7 @@ describe('Unit testing the /projects route', function() {
       return request(app)
         .post('/api/projects/').send(test_project)
         .then(function(response){
+            console.log(response);
             return request(app)
                 .get('/api/projects/search-substr/test_project')
                 .then(function(res2){

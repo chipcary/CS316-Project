@@ -239,43 +239,10 @@ userRouter.route('/:email/match').get((req, res) => {
 });
 
 
-//create a new user
-// userRouter.route('/:email&:name&:city&:state').post((req, res) => {
-// 	User.create({
-// 		email: req.params.email,
-// 		name: req.params.name,
-// 		city: req.params.city,
-// 		state: req.params.state
-// 	})
-// 	.then(task =>{
-// 		const payload = {
-// 			email: req.params.email,
-// 		}
-// 		jwt.sign(
-// 			payload,
-// 			"secret",
-// 			{
-// 				expiresIn: 31556926
-// 			},
-// 			(err, token) => {
-// 				var toSend = {};
-// 				toSend.success = true;
-// 				toSend.token = "Bearer " + token;
-// 				console.log(toSend);
-// 				res.send(toSend);
-// 			}
-// 		);
-// 	})
-// 	.catch(task =>{
-// 		var toSend = {};
-// 		toSend.success = false;
-// 		res.send(toSend);
-// 	});
-// });
+
 
 //create a new user with a password included
 userRouter.route('/:email&:name&:city&:state&:password').post((req, res) => {
-	bcrypt.hash(req.params.password, 10, function(err, hash){
 		User.create({
 			email: req.params.email,
 			name: req.params.name,
@@ -283,33 +250,35 @@ userRouter.route('/:email&:name&:city&:state&:password').post((req, res) => {
 			state: req.params.state
 		})
 		.then(task =>{
-			UserCreds.create({
-				email: req.params.email,
-				hash: hash
-			})
-			.then(results =>{
-				const payload = {
-				email: req.params.email,
-				}
-				jwt.sign(
-					payload,
-					"secret",
-					{
-						expiresIn: 31556926
-					},
-					(err, token) => {
-						var toSend = {};
-						toSend.success = true;
-						toSend.token = "Bearer " + token;
-						console.log(toSend);
-						res.send(toSend);
+			bcrypt.hash(req.params.password, 10, function(err, hash){
+				UserCreds.create({
+					email: req.params.email,
+					hash: hash
+				})
+				.then(results =>{
+					const payload = {
+					email: req.params.email,
 					}
-				);
-			})
-			.catch(task =>{
-				var toSend = {};
-				toSend.success = false;
-				res.send(toSend);
+					jwt.sign(
+						payload,
+						"secret",
+						{
+							expiresIn: 31556926
+						},
+						(err, token) => {
+							var toSend = {};
+							toSend.success = true;
+							toSend.token = "Bearer " + token;
+							console.log(toSend);
+							res.send(toSend);
+						}
+					);
+				})
+				.catch(task =>{
+					var toSend = {};
+					toSend.success = false;
+					res.send(toSend);
+				});
 			});
 		})
 		.catch(task =>{
@@ -317,6 +286,39 @@ userRouter.route('/:email&:name&:city&:state&:password').post((req, res) => {
 			toSend.success = false;
 			res.send(toSend);
 		});
+});
+
+//create a new user
+userRouter.route('/:email&:name&:city&:state').post((req, res) => {
+	User.create({
+		email: req.params.email,
+		name: req.params.name,
+		city: req.params.city,
+		state: req.params.state
+	})
+	.then(task =>{
+		const payload = {
+			email: req.params.email,
+		}
+		jwt.sign(
+			payload,
+			"secret",
+			{
+				expiresIn: 31556926
+			},
+			(err, token) => {
+				var toSend = {};
+				toSend.success = true;
+				toSend.token = "Bearer " + token;
+				console.log(toSend);
+				res.send(toSend);
+			}
+		);
+	})
+	.catch(task =>{
+		var toSend = {};
+		toSend.success = false;
+		res.send(toSend);
 	});
 });
 
