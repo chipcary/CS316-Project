@@ -58,6 +58,7 @@ export const registerUser = userData => dispatch => {
       }
     })
     .catch(err => {
+      alert('An account with this email already exists. Please choose a different email.')
       dispatch({
         payload: err.response.data
       })

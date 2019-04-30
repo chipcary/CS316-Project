@@ -79,7 +79,6 @@ export default class DifferentProjectPage extends React.Component{
 		await this.loadDataFromServer();
 		await this.loadMembersFromServer();
 		await this.loadCreatorFromServer();
-		this.determineUser();
 	}
 
 	async componentDidUpdate(prevProps, prevState){
@@ -104,11 +103,19 @@ export default class DifferentProjectPage extends React.Component{
 					this.setState({
 						canJoin: false,
 						canLeave: true,
+						editable: true,
 					})
-				} else {
+				} else if(this.state.creator_email != this.state.user_email){
 					this.setState({
 						canJoin: true,
 						canLeave: false,
+						editable: true,
+					})
+				} else if(this.state.creator_email == this.state.user_email){
+					this.setState({
+						canJoin: false,
+						canLeave: false,
+						editable: true,
 					})
 				}
 			});
