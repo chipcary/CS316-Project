@@ -62,7 +62,7 @@ export default class RecommmendedProjectSearchPage extends React.Component {
 					console.log(res);
 					console.log(JSON.stringify(res));
 					this.setState({
-						data: res.rows,
+						data: res,
 						pagesCount: 0,
 					});
 				});
@@ -74,7 +74,7 @@ export default class RecommmendedProjectSearchPage extends React.Component {
 					console.log(res);
 					console.log(JSON.stringify(res));
 					this.setState({
-						data: res.rows,
+						data: res,
 						pagesCount: 0,
 					});
 				});
