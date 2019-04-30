@@ -158,7 +158,7 @@ userRouter.route('/:email').get((req, res) => {
 		where: {
 			email: email
 		},
-		include: [UserInterests]
+		include: [{model: UserInterests, required: false}]
 	})
 	.then(email => {
 		res.send(email);
@@ -183,9 +183,17 @@ userRouter.route('/:email/match').get((req, res) => {
 		where: {
 			email: email
 		},
-		include: [UserInterests]
+		include: [{model: UserInterests, required: false}]
 	})
 	.then(user => {
+		if(!user.UserInterest){
+			results = {
+				count: 0,
+				rows: [],
+				pages: 0
+			};
+			res.send(results);
+		}
 		var valid_interests = [];
 		if(user.UserInterest.interest1 && user.UserInterest.interest1 !== ''){
 			valid_interests.push(user.UserInterest.interest1);
@@ -195,6 +203,14 @@ userRouter.route('/:email/match').get((req, res) => {
 		}
 		if(user.UserInterest.interest3 && user.UserInterest.interest3 !== ''){
 			valid_interests.push(user.UserInterest.interest3);
+		}
+		if(valid_interests.length === 0){
+			results = {
+				count: 0,
+				rows: [],
+				pages: 0
+			};
+			res.send(results);
 		}
 		console.log(valid_interests);
 		var page = req.query.page;
@@ -231,11 +247,12 @@ userRouter.route('/:email/match').get((req, res) => {
 			res.send(results);
 		})
 		.catch(error => {
-			res.send(error);
+			res.status(500).send(error);
 		});
 	})
 	.catch(error => {
-		res.send(error);
+		console.log(error);
+		res.status(500).send(error);
 	});
 });
 
@@ -278,14 +295,14 @@ userRouter.route('/:email&:name&:city&:state&:password').post((req, res) => {
 				.catch(task =>{
 					var toSend = {};
 					toSend.success = false;
-					res.send(toSend);
+					res.status(500).send(toSend);
 				});
 			});
 		})
 		.catch(task =>{
 			var toSend = {};
 			toSend.success = false;
-			res.send(toSend);
+			res.status(500).send(toSend);
 		});
 });
 
@@ -319,7 +336,7 @@ userRouter.route('/:email&:name&:city&:state').post((req, res) => {
 	.catch(task =>{
 		var toSend = {};
 		toSend.success = false;
-		res.send(toSend);
+		res.status(500).send(toSend);
 	});
 });
 
