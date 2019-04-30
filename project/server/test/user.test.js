@@ -77,8 +77,13 @@ describe('Unit testing the /users route', function() {
     });
 
     it('should update user interests', function(){
+        interests = {
+            interest1: "i1",
+            interest2: "i2",
+            interest3: "i3"
+        };
         return request(app)
-        .put('/api/users/test_user/interests/i1&i2&i3')
+        .put('/api/users/test_user/interests').send(interests)
         .then(function(response){
             return request(app)
                 .get('/api/users/test_user')
