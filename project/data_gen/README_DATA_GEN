@@ -4,8 +4,9 @@ realistic data for all the relations in our database. Moreover, with all the dat
 we were able to create a representative population of users in our database whose information was randomly generated. 
 
 There were many variables whose values were chosen randomly from a list created by us in Python. For example, we produced a possible range
-of outcomes for variables like the User's interests, the names of the Projects and the project's current and goal capacity. Using the csv
-package in python, we wrote through all the relations and chose values for each variable randomly through the random.choice() function. 
+of outcomes for variables like the User's interests, the names of the Projects, the project's current and goal capacity, and many others.
+Using the csv package in python, we wrote through all the relations and chose values for each variable randomly through the random.choice()
+function. 
 
 The testing process helped identify many smaller problems that existed with the original dataset production. Through diagnosing our errors,
 we were able to produce a realistic dataset that would run properly given the constraints outlined by our database. 
