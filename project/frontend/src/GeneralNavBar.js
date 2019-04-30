@@ -26,7 +26,7 @@ export default class GeneralNavBar extends React.Component {
 	render() {
 		return (
 			<div>
-				<Navbar id="bar" color="light" light expand="md">
+				<Navbar id="bar" color="light" light expand="lg">
 				  <div id='menu-title'>
 				    <GeneralMenu></GeneralMenu>
 				    <div></div>

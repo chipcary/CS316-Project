@@ -362,8 +362,7 @@ userRouter.route('/:email').delete((req, res) => {
 //update user interests
 userRouter.route('/:email/interests').put((req, res) => {
 	email = req.params.email
-	console.log(req.data);
-	console.log(req.body);
+	console.log(req);
 	var values = req.body;
 	values["email"] = email
 	UserInterests.findByPk(email)

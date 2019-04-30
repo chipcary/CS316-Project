@@ -109,7 +109,7 @@ export default class UserSettingsPage extends React.Component {
 		var updatePath = "/api/users/" + userData.email + "&" + userData.name + "&" + userData.city + "&" + userData.state;
 		var newUser = await fetch(updatePath, { method: 'PUT'});
 		var interestPath = "/api/users/" + userData.email + "/interests";
-		var updatedInterest = await fetch(interestPath, { method: 'PUT', body: JSON.stringify(interests)});
+		var updatedInterest = await fetch(interestPath, { method: 'PUT', headers: { "Content-Type": "application/json" }, body: JSON.stringify(interests)});
 		console.log(newUser);
 		console.log(updatedInterest);
 	};
