@@ -51,6 +51,7 @@ export default class UsersSearchPage extends React.Component {
 		}
 	}
 
+
 	async loadDataFromServer() {
 		console.log(this.state.filters['keyword'] == "")
 		if(this.state.filters['keyword'] == ""){
@@ -60,7 +61,7 @@ export default class UsersSearchPage extends React.Component {
 					console.log(res);
 					console.log(JSON.stringify(res));
 					this.setState({
-						data: res,
+						data: res.rows,
 					});
 				});
 		} else {
@@ -71,7 +72,7 @@ export default class UsersSearchPage extends React.Component {
 					console.log(res);
 					console.log(JSON.stringify(res));
 					this.setState({
-						data: res,
+						data: res.rows,
 					});
 				});
 		}

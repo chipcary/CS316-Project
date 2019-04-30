@@ -11,8 +11,8 @@ export default class ProjectSearchPage extends React.Component {
 		this.state = {
 			page_name: "projects_page",
 			page_title: "Projects",
-			table_columns: ["Name", "Project Date","Day","Spots Left", "City", "State"],
-			table_properties: ["project_name", "project_date","day_of_the_week","spots_left","city","state"],
+			table_columns: ["Name", "Start Date","End Date","Spots Left", "City", "State"],
+			table_properties: ["project_name", "start_date","end_date","spots_left","city","state"],
 			detail_view_item: {},
 			detail_view_options: [],
 			detail_view_action:'',
@@ -60,7 +60,7 @@ export default class ProjectSearchPage extends React.Component {
 					console.log(res);
 					console.log(JSON.stringify(res));
 					this.setState({
-						data: res,
+						data: res.rows,
 					});
 				});
 		} else {
@@ -71,7 +71,7 @@ export default class ProjectSearchPage extends React.Component {
 					console.log(res);
 					console.log(JSON.stringify(res));
 					this.setState({
-						data: res,
+						data: res.rows,
 					});
 				});
 		}

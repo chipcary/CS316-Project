@@ -15,6 +15,7 @@ export default class DifferentUserPage extends React.Component {
 			user: null,
 			projects_created: [],
 			projects_joined: [],
+			userInterests: "",
 			table_columns: ["Name", "Project Date","Day","Spots Left", "City", "State"],
 			table_properties: ["project_name", "project_date","day_of_the_week","spots_left","city","state"],
 		}
@@ -58,8 +59,24 @@ export default class DifferentUserPage extends React.Component {
 		var user = await fetch(path, {method: 'GET'})
 			.then(data => data.json())
 			.then((res) => {
+				console.log(res);
+				var interestString = " ";
+				if(res[0].UserInterest != null && res[0].UserInterest.interest1 != null){
+					interestString = interestString + res[0].UserInterest.interest1 + ", "
+				}
+				if(res[0].UserInterest != null && res[0].UserInterest.interest2 != null){
+					interestString = interestString + res[0].UserInterest.interest2 + ", "
+				}
+				if(res[0].UserInterest != null && res[0].UserInterest.interest3 != null){
+					interestString = interestString + res[0].UserInterest.interest3 + ", "
+				}
+				if(interestString.length > 1){
+					var length = interestString.length-2
+					interestString = interestString.substring(0,length);
+				}
 				this.setState({
 					user: res[0],
+					userInterests: interestString,
 				});
 			});
 	}
@@ -80,7 +97,7 @@ export default class DifferentUserPage extends React.Component {
 				<GeneralNavBar title={this.state.user != null ? this.state.user.name + "'s Page" : ""}> </GeneralNavBar>
 
 				<div className="paddedDiv">
-					Username: 
+					Name: 
 					{this.state.user != null ? " " + this.state.user.name : ""}
 				</div>
 
@@ -99,6 +116,11 @@ export default class DifferentUserPage extends React.Component {
 					{this.state.user != null ? " " + this.state.user.state  : ""}
 				</div>
 
+				<div className="paddedDiv">
+					Interests: 
+					{this.state.user != null ? this.state.userInterests : " "}
+				</div>
+
 				{this.state.projects_created.length > 0 ?
 					<div className="paddedDiv">
 						{this.state.user.name} has created the following projects
@@ -107,7 +129,7 @@ export default class DifferentUserPage extends React.Component {
 							columns={this.state.table_columns}
 							table_properties={this.state.table_properties} 
 	                        list_items={this.state.projects_created}
-	                        showHeader = {true}
+	                        showHeader = {false}
 	                        filters = {this.state.filters}
 	                        onFilterValueSelection = {this.onFilterValueSelection}
 	                        onFilterValueChange = {this.onFilterValueChange}
@@ -122,7 +144,7 @@ export default class DifferentUserPage extends React.Component {
 							columns={this.state.table_columns}
 							table_properties={this.state.table_properties} 
 	                        list_items={this.state.projects_joined}
-	                        showHeader = {true}
+	                        showHeader = {false}
 	                        filters = {this.state.filters}
 	                        onFilterValueSelection = {this.onFilterValueSelection}
 	                        onFilterValueChange = {this.onFilterValueChange}

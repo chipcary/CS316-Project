@@ -15,6 +15,7 @@ import {setCurrentUser, logoutUser} from './action';
 import setAuthToken from './setAuthToken';
 import configureStore from "./configureStore";
 import RegisterPage from "./RegisterPage";
+import UserSettingsPage from "./UserSettingsPage";
 
 const store = configureStore();
 
@@ -38,7 +39,7 @@ class App extends React.Component {
       var user_email = decoded.email;
       setAuthToken(token);
       
-
+      console.log('hello');
       store.dispatch(setCurrentUser(decoded));
       const currentTime = Date.now() / 1000; // to get in milliseconds
       var path = '/api/users/' + user_email;
@@ -50,7 +51,7 @@ class App extends React.Component {
         this.setState = {
           user: false,
         }
-        window.location.href="./login";
+        window.location.href="./";
       } else {
         this.setState({
           current_user: res[0]
@@ -70,6 +71,7 @@ class App extends React.Component {
               <Route exact path="/login" component={LoginPage}/>
               <Route exact path="/userSearch" component={UsersSearchPage}/>
               <Route exact path="/projectSearch" component={ProjectSearchPage}/>
+              <Route exact path="/userSettings" component={UserSettingsPage}/>
               <Route path="/users/:user_email" component={DifferentUserPage}/>
               <Route path="/projects/:pid" component={DifferentProjectPage}/>
             </div>

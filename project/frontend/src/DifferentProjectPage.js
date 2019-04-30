@@ -91,18 +91,8 @@ export default class DifferentProjectPage extends React.Component{
 				</div>}
 
 				<div className="paddedDiv">
-					Project Description:
-					{this.state.project != null ? " " + this.state.project.description : ""}
-				</div>
-
-				<div className="paddedDiv">
 					Project tag:
 					{this.state.project != null ? " " + this.state.project.tag : ""}
-				</div>
-
-				<div className="paddedDiv">
-					Project Date:
-					{this.state.project != null ? " " + this.state.project.project_date : ""}
 				</div>
 
 				<div className="paddedDiv">
@@ -111,8 +101,8 @@ export default class DifferentProjectPage extends React.Component{
 				</div>
 
 				<div className="paddedDiv">
-					Time:
-					{this.state.project != null ? " " + this.state.project.start_time + ":00 until " + this.state.project.end_time + ":00" : ""}
+					Project Duration:
+					{this.state.project != null ? " " + this.state.project.start_date.substring(0,10) + " until " + this.state.project.end_date.substring(0,10) : ""}
 				</div>
 
 				<div className="paddedDiv">
@@ -128,7 +118,7 @@ export default class DifferentProjectPage extends React.Component{
 							columns={this.state.table_columns}
 							table_properties={this.state.table_properties} 
 		                    list_items={this.state.members}
-		                    showHeader = {true}
+		                    showHeader = {false}
 		                    filters = {this.state.filters}
 		                    onFilterValueSelection = {this.onFilterValueSelection}
 		                    onFilterValueChange = {this.onFilterValueChange}

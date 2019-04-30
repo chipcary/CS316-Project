@@ -45,8 +45,10 @@ export default class PageTable extends Component {
 		switch(prop){
 			case 'spots_left':
 				return item["goal_capacity"]-item["curr_capacity"];
-			case 'day_of_the_week':
-				return String.toUpperCase(item['day_of_the_week'])
+			case 'start_date':
+				return item["start_date"].substring(0,10);
+			case 'end_date':
+				return item["end_date"].substring(0,10);
 			default:
 				return item[prop];
 		}

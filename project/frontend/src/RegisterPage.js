@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {registerUser} from './action';
+import {registerUser, associatePassword} from './action';
 
 
 class RegisterPage extends Component {
@@ -59,12 +59,14 @@ class RegisterPage extends Component {
 	          <div className="col s8 offset-s2">
 
 	            <div className="col s12" style={{ paddingLeft: "11.250px" }}>
-	              <h4>
-	                <b>Register</b> below
-	              </h4>
+	            <Link to="/login" className="btn-flat waves-effect">
 	              <p className="grey-text text-darken-1">
 	                Already have an account? Click here to login!
 	              </p>
+	            </Link>
+	              <h4>
+	                <b>Register</b> below
+	              </h4>
 	            </div>
 	            <form noValidate onSubmit={this.onSubmit}>
 
@@ -195,8 +197,9 @@ const mapStateToProps = state => ({
   auth: state.auth
 });
 
+
 export default connect(
   mapStateToProps,
-  { registerUser }
+  { registerUser },
 )(RegisterPage);
 

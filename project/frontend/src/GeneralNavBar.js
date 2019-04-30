@@ -4,6 +4,7 @@ import { Navbar, NavbarBrand} from 'reactstrap';
 import GeneralMenu from './GeneralMenu'
 import * as Constants from './Constants';
 import './CenteredListingPage.css';
+import Logout from './Logout';
 
 
 
@@ -21,6 +22,7 @@ export default class GeneralNavBar extends React.Component {
 		});
 	}
 
+
 	render() {
 		return (
 			<div>
@@ -32,6 +34,7 @@ export default class GeneralNavBar extends React.Component {
 				  <div className="paddedDiv">
 				  <NavbarBrand href="/">{this.props.title}</NavbarBrand>
 				  </div>
+				  <Logout id="usermenu"/>
 				</Navbar>
 			</div>
 		);

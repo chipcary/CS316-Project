@@ -58,7 +58,7 @@ userRouter.route('/login/:email&:password').get((req, res) => {
 		bcrypt.compare(req.params.password, creds.hash, function(err, match) {
 		  if(match) {
 		  	const payload = {
-		  		email: req.params.email,
+		  		email: req.params.email
 		  	}
 		  	jwt.sign(
 		  		payload,
