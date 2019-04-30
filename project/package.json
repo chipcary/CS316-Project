@@ -19,6 +19,7 @@
     "jsonwebtoken": "^8.5.1",
     "jwt-decode": "^2.2.0",
     "react": "16.8.6",
+    "react-date-range": "^0.9.4",
     "react-dom": "16.8.6",
     "react-redux": "^7.0.2",
     "reactstrap": "^8.0.0",

@@ -249,6 +249,7 @@ Note: only description can be omitted
 projectRouter.route('/')
 .post((req, res) => {
 	project_data = req.body;
+	console.log(req.body);
 	//drop the pid so the db can auto increment
 	fields = Object.keys(Project.rawAttributes).slice(1);
 	Project.create(project_data, {fields: fields})

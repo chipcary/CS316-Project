@@ -17,7 +17,7 @@ import configureStore from "./configureStore";
 import RegisterPage from "./RegisterPage";
 import UserSettingsPage from "./UserSettingsPage";
 import RecommendedUsersSearchPage from "./RecommendedUsersSearchPage";
-
+import NewProjectPage from './NewProjectPage';
 
 const store = configureStore();
 
@@ -35,6 +35,8 @@ class App extends React.Component {
   }
 
   determineUser = async () => {
+    store.dispatch(logoutUser());
+    /*
     if (localStorage.jwtToken) {
       const token = localStorage.jwtToken;
       const decoded = jwt_decode(token);
@@ -59,7 +61,7 @@ class App extends React.Component {
           current_user: res[0]
         });
       }
-    }
+    }*/
   }
 
   render() {
@@ -77,6 +79,7 @@ class App extends React.Component {
               <Route path="/users/:user_email" component={DifferentUserPage}/>
               <Route path="/projects/:pid" component={DifferentProjectPage}/>
               <Route exact path="/recommendedUserSearch" component={RecommendedUsersSearchPage}/>
+              <Route exact path="/createProject" component={NewProjectPage}/>
             </div>
           </Router>
           </Provider>
