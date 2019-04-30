@@ -99,17 +99,17 @@ export default class DifferentProjectPage extends React.Component{
 				this.setState({
 					members: tempArr,
 				});
-				if(alreadyPresent){
+				if(alreadyPresent && this.state.creator_email != this.state.user_email){
 					this.setState({
 						canJoin: false,
 						canLeave: true,
-						editable: true,
+						editable: false,
 					})
 				} else if(this.state.creator_email != this.state.user_email){
 					this.setState({
 						canJoin: true,
 						canLeave: false,
-						editable: true,
+						editable: false,
 					})
 				} else if(this.state.creator_email == this.state.user_email){
 					this.setState({

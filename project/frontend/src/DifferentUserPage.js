@@ -16,8 +16,8 @@ export default class DifferentUserPage extends React.Component {
 			projects_created: [],
 			projects_joined: [],
 			userInterests: "",
-			table_columns: ["Name", "Project Date","Day","Spots Left", "City", "State"],
-			table_properties: ["project_name", "project_date","day_of_the_week","spots_left","city","state"],
+			table_columns: ["Name", "Start Date","End Date","Spots Left", "City", "State"],
+			table_properties: ["project_name", "start_date","end_date","spots_left","city","state"],
 		}
 
 		this.loadDataFromServer = this.loadDataFromServer.bind(this);
