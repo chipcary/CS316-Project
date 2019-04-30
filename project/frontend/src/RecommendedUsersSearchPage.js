@@ -183,7 +183,7 @@ export default class RecommendedUsersSearchPage extends React.Component {
 	render () {
 		return (
 			<div>
-			    <GeneralNavBar title={"Users Search Page"}></GeneralNavBar>
+			    <GeneralNavBar title={"Recommended Users Search Page"}></GeneralNavBar>
 				<div>
 					<PageTable
 						type={"User"}
