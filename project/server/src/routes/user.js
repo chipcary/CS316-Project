@@ -321,7 +321,7 @@ userRouter.route('/:email&:name&:city&:state&:password').post((req, res) => {
 });
 
 //update user info
-userRouter.route('/:email/:name&:city&:state').put((req, res) => {
+userRouter.route('/:email&:name&:city&:state').put((req, res) => {
 	var email = req.params.email;
 	User.findByPk(email)
 	.then(user =>{
@@ -360,7 +360,9 @@ userRouter.route('/:email').delete((req, res) => {
 //update user interests
 userRouter.route('/:email/interests').put((req, res) => {
 	email = req.params.email
-	var values =req.body;
+	console.log(req.data);
+	console.log(req.body);
+	var values = req.body;
 	values["email"] = email
 	UserInterests.findByPk(email)
 	.then(user =>{

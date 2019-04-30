@@ -67,7 +67,8 @@ export default class UsersSearchPage extends React.Component {
 					});
 				});
 		} else {
-			var path = '/api/users/search-substr/' + this.state.filters['keyword'];
+			var currPage = Number(this.state.currentPage) + 1;
+			var path = '/api/users/search-substr/' + this.state.filters['keyword'] + "/?page="+  currPage;
 			var users = await fetch(path, {method: 'GET'})
 				.then(data => data.json())
 				.then((res) => {
@@ -75,6 +76,7 @@ export default class UsersSearchPage extends React.Component {
 					console.log(JSON.stringify(res));
 					this.setState({
 						data: res.rows,
+						pagesCount: res.pages,
 					});
 				});
 		}

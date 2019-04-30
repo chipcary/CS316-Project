@@ -18,19 +18,27 @@ export default class UserSettingsPage extends React.Component {
 			projects_joined: [],
 			state: "",
 			city: "",
-			interest1: "",
-			interest2: "",
-			interest3: "",
+			interest1: "Human Rights",
+			interest2: "Human Rights",
+			interest3: "Human Rights",
 		}
-
+		this.onSubmit = this.onSubmit.bind(this);
 		this.loadDataFromServer = this.loadDataFromServer.bind(this);
+		this.deleteUser = this.deleteUser.bind(this)
 	}
 
 	async loadDataFromServer(){
 		var email = await AuthRoleValidation.determineUser();
 		console.log(email);
+		this.setState({
+			email: email[0].email,
+			name: email[0].name,
+			state: email[0].state,
+			city: email[0].city,
+		})
 		var path = '/api/users/' + email[0].email;
 		var user = await fetch(path, {method: 'GET'})
+			.then(data => data.json())
 			.then((res) => {
 				console.log(res)
 				var interest1 = "";
@@ -67,10 +75,19 @@ export default class UserSettingsPage extends React.Component {
 		// this.loadDataFro
 	}
 
-	async onSubmit(){
+	async deleteUser(e){
+		e.preventDefault();
+		var path = "/api/users/" + this.state.email;
+		var success = await fetch(path, { method: 'DELETE'})
+		//this.props.logoutUser();
+		window.location.href="./"
+	}
+
+	async onSubmit(e){
+		e.preventDefault();
 		if(this.state.city.length < 1 || this.state.state.length < 1 || this.state.interest1.length < 1 ||
 			this.state.interest2.length < 1 || this.state.interest3.length < 1){
-			alert('Please include both a city and state');
+			alert('Please include all forms');
 			return;
 		}
 		const userData = {
@@ -83,8 +100,18 @@ export default class UserSettingsPage extends React.Component {
 			interest2: this.state.interest2,
 			interest3: this.state.interest3,
 		}
-		alert('gets here');
-		//this.props.updateUser(userData);
+		var interests = {}
+		console.log(userData.interest1);
+		interests["interest1"]= userData.interest1;
+		interests["interest2"]= userData.interest2;
+		interests["interest3"]= userData.interest3;
+		console.log(interests)
+		var updatePath = "/api/users/" + userData.email + "&" + userData.name + "&" + userData.city + "&" + userData.state;
+		var newUser = await fetch(updatePath, { method: 'PUT'});
+		var interestPath = "/api/users/" + userData.email + "/interests";
+		var updatedInterest = await fetch(interestPath, { method: 'PUT', body: JSON.stringify(interests)});
+		console.log(newUser);
+		console.log(updatedInterest);
 	};
 
 	onChange = e => {
@@ -115,7 +142,7 @@ export default class UserSettingsPage extends React.Component {
 	                  id="city"
 	                  type="text"
 	                />
-	                <label htmlFor="city">Name</label>
+	                <label htmlFor="city">City</label>
 
 	              </div>
 
@@ -200,44 +227,44 @@ export default class UserSettingsPage extends React.Component {
 
 	              <div className="input-field col s12">
 	                <select id="interest2" size="5" onChange={this.onChange} value={this.state.interest2}>
-	                	<option value="Human Rights">Alabama</option>
-	                	<option value="Animal Rights">Alaska</option>
-	                	<option value="Arts and Crafts">Arizona</option>
-	                	<option value="Youth">Arkansas</option>
-	                	<option value="Technology">California</option>
-	                	<option value="Politics">Colorado</option>
-	                	<option value="Education">Connecticut</option>
-	                	<option value="Health">Delaware</option>
-	                	<option value="Seniors">Florida</option>
-	                	<option value="Disaster Relief">Georgia</option>
-	                	<option value="Environment">Hawaii</option>
-	                	<option value="Women">Connecticut</option>
-	                	<option value="Faith-based">Delaware</option>
-	                	<option value="International">Florida</option>
-	                	<option value="LGBT">Georgia</option>
-	                	<option value="Sports">Hawaii</option>
+	                	<option value="Human Rights">Human Rights</option>
+	                	<option value="Animal Rights">Animal Rights</option>
+	                	<option value="Arts and Crafts">Arts and Crafts</option>
+	                	<option value="Youth">Youth</option>
+	                	<option value="Technology">Technology</option>
+	                	<option value="Politics">Politics</option>
+	                	<option value="Education">Education</option>
+	                	<option value="Health">Health</option>
+	                	<option value="Seniors">Seniors</option>
+	                	<option value="Disaster Relief">Disaster Relief</option>
+	                	<option value="Environment">Environment</option>
+	                	<option value="Women">Women</option>
+	                	<option value="Faith-based">Faith-based</option>
+	                	<option value="International">International</option>
+	                	<option value="LGBT">LGBT</option>
+	                	<option value="Sports">Sports</option>
 	                </select>
 	                <label htmlFor="interest2">Interest 2</label>
 	              </div>
 
 	              <div className="input-field col s12">
 	                <select id="interest3" size="5" onChange={this.onChange} value={this.state.interest3}>
-	                	<option value="Human Rights">Alabama</option>
-	                	<option value="Animal Rights">Alaska</option>
-	                	<option value="Arts and Crafts">Arizona</option>
-	                	<option value="Youth">Arkansas</option>
-	                	<option value="Technology">California</option>
-	                	<option value="Politics">Colorado</option>
-	                	<option value="Education">Connecticut</option>
-	                	<option value="Health">Delaware</option>
-	                	<option value="Seniors">Florida</option>
-	                	<option value="Disaster Relief">Georgia</option>
-	                	<option value="Environment">Hawaii</option>
-	                	<option value="Women">Connecticut</option>
-	                	<option value="Faith-based">Delaware</option>
-	                	<option value="International">Florida</option>
-	                	<option value="LGBT">Georgia</option>
-	                	<option value="Sports">Hawaii</option>
+	                	<option value="Human Rights">Human Rights</option>
+	                	<option value="Animal Rights">Animal Rights</option>
+	                	<option value="Arts and Crafts">Arts and Crafts</option>
+	                	<option value="Youth">Youth</option>
+	                	<option value="Technology">Technology</option>
+	                	<option value="Politics">Politics</option>
+	                	<option value="Education">Education</option>
+	                	<option value="Health">Health</option>
+	                	<option value="Seniors">Seniors</option>
+	                	<option value="Disaster Relief">Disaster Relief</option>
+	                	<option value="Environment">Environment</option>
+	                	<option value="Women">Women</option>
+	                	<option value="Faith-based">Faith-based</option>
+	                	<option value="International">International</option>
+	                	<option value="LGBT">LGBT</option>
+	                	<option value="Sports">Sports</option>
 	                </select>
 	                <label htmlFor="interest3">Interest 3</label>
 	              </div>
@@ -258,6 +285,20 @@ export default class UserSettingsPage extends React.Component {
 	                </button>
 	              </div>
 	            </form>
+
+	            <button onClick={this.deleteUser}
+					style={{
+	                    width: "150px",
+	                    borderRadius: "3px",
+	                    letterSpacing: "1.5px",
+	                    marginTop: "1rem",
+	                    backgroundColor: "rgb(0, 188, 212)"
+	                  }}
+	                  type="submit"
+	                  className="hoverable"
+	                >
+	                  Delete User
+	                </button>
 
 			</div>
 			)

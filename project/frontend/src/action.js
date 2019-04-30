@@ -22,7 +22,6 @@ export const loginUser = userData => dispatch => {
         const decoded = jwt_decode(token);
         console.log('helo5');
         dispatch(setCurrentUser(decoded));
-        alert('User succesfully created!');
       } else {
         alert('Invalid Email/Password');
       }
@@ -34,20 +33,10 @@ export const loginUser = userData => dispatch => {
     });
 };
 
-export const associatePassword = userData => dispatch => {
-  var path = "/api/users/login/" + userData.email + "&" + userData.password;
-  axios
-    .put(path, userData)
-    .then(res =>{
-      console.log(res.data)
-      if(res.data.success == true){
-        alert('User successfully created');
-      }
-    })
-}
+
 
 export const registerUser = userData => dispatch => {
-  var path = "/api/users/" + userData.email + "&" + userData.name + "&" + userData.city + "&" + userData.state;
+  var path = "/api/users/" + userData.email + "&" + userData.name + "&" + userData.city + "&" + userData.state + "&" + userData.password;
   axios
     .post(path, userData)
     .then( res => {
@@ -63,7 +52,7 @@ export const registerUser = userData => dispatch => {
         const decoded = jwt_decode(token);
         console.log('helo5');
         dispatch(setCurrentUser(decoded));
-        alert('Account successfully created!')
+        alert('User succesfully created!');
       } else {
         alert('An account with this email already exists. Please choose a different email.');
       }
@@ -73,8 +62,6 @@ export const registerUser = userData => dispatch => {
         payload: err.response.data
       })
     });
-
-    console.log('DOES THIS GET HERE I HOPE IT DOES');
 };
 
 

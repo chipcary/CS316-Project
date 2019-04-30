@@ -5,6 +5,7 @@ import * as Constants from './Constants';
 import GeneralNavBar from './GeneralNavBar';
 import {Button} from 'reactstrap';
 import './CenteredListingPage.css';
+import AuthRoleValidation from './AuthRoleValidation';
 import {Link} from 'react-router-dom';
 
 export default class DifferentProjectPage extends React.Component{
@@ -19,11 +20,24 @@ export default class DifferentProjectPage extends React.Component{
 			members: [],
 			table_columns: ["Name", "City", "State"],
 			table_properties: ["name", "city", "state"],
+			editable: false,
 		}
 
+		this.determineUser = this.determineUser.bind(this);
 		this.loadDataFromServer = this.loadDataFromServer.bind(this);
 		this.loadMembersFromServer = this.loadMembersFromServer.bind(this);
 		this.loadCreatorFromServer = this.loadCreatorFromServer.bind(this);
+		this.determineUser();
+	}
+
+	async determineUser(){
+		var user = AuthRoleValidation.determineUser();
+		var email = user[0].email;
+		if(email == this.state.creator_email){
+			this.setState({
+				editable:true,
+			})
+		}
 	}
 
 	async loadDataFromServer(){
@@ -124,6 +138,13 @@ export default class DifferentProjectPage extends React.Component{
 		                    onFilterValueChange = {this.onFilterValueChange}
 		                    onRemoveFilter = {this.onRemoveFilter} />
 	                 </div>: " "}
+
+	             {this.state.editable == true ?
+	             	<div className="paddedDiv">
+	             		<Button>
+	             			Edit Project
+	             		</Button>
+	             	</div> : " "}
 
 			</div>
 		)

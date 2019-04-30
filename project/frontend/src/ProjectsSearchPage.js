@@ -18,8 +18,6 @@ export default class ProjectSearchPage extends React.Component {
 			detail_view_action:'',
 			data:[],
 			currentPage: 0,
-			previousPage: 0,
-			pageSize: props.simple ? 4:20,
 			pagesCount : 0,
 			filters: {
 				'keyword': '',
@@ -54,24 +52,28 @@ export default class ProjectSearchPage extends React.Component {
 	async loadDataFromServer() {
 		console.log(this.state.filters['keyword'] == "")
 		if(this.state.filters['keyword'] == ""){
-			var users = await fetch('/api/projects/' , { method: 'GET' })
+			var currPage = Number(this.state.currentPage) + 1;
+			var path = '/api/projects/?page=' + currPage;
+			var users = await fetch(path , { method: 'GET' })
 				.then(data => data.json())
 				.then((res) => {
 					console.log(res);
 					console.log(JSON.stringify(res));
 					this.setState({
 						data: res.rows,
+						pagesCount: res.pages,
 					});
 				});
 		} else {
-			var path = '/api/projects/search-substr/' + this.state.filters['keyword'];
-			var users = await fetch(path, {method: 'GET'})
+			var currPage = Number(this.state.currentPage) + 1;
+var path = '/api/projects/search-substr/' + this.state.filters['keyword'] + "/?page="+  currPage;			var users = await fetch(path, {method: 'GET'})
 				.then(data => data.json())
 				.then((res) => {
 					console.log(res);
 					console.log(JSON.stringify(res));
 					this.setState({
 						data: res.rows,
+						pagesCount: res.pages,
 					});
 				});
 		}

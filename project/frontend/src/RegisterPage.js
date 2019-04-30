@@ -49,6 +49,7 @@ class RegisterPage extends Component {
 			password: this.state.password,
 			city: this.state.city,
 			state: this.state.state,
+			password: this.state.password,
 		}
 		this.props.registerUser(userData);
 	};
