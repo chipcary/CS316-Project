@@ -227,6 +227,7 @@ userRouter.route('/:email/match').get((req, res) => {
 		.then(results => {
 			var pages = Math.ceil(results.count/LIMIT);
 			results["pages"] = pages;
+			console.log(results);
 			res.send(results);
 		})
 		.catch(error => {

@@ -10,8 +10,8 @@ module.exports = (sequelize, DataTypes) => {
     interest2: DataTypes.STRING,
     interest3: DataTypes.STRING
   }, {
-    freezeTableName: true,
     tableName: 'userinterests',
+    freezeTableName: true
   });
   UserInterests.associate = function(models) {
     UserInterests.belongsTo(models.User, {foreignKey: 'email'});
