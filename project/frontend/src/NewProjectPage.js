@@ -62,7 +62,6 @@ export default class newProjectPage extends React.Component{
 			var res = await fetch('/api/projects/', { method: 'POST', headers: { "Content-Type": "application/json" }, body: JSON.stringify(bodyToUse)});
 			console.log(res);
 			alert('Succesfully created project')
-			window.location.href="/projectSearch";
 		}
 	}
 	onChange = e =>{
