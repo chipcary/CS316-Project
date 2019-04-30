@@ -24,13 +24,14 @@ export default class DifferentProjectPage extends React.Component{
 			user_email: null,
 		}
 
-		this.determineUser = this.determineUser.bind(this);
+		//this.determineUser = this.determineUser.bind(this);
 		this.loadDataFromServer = this.loadDataFromServer.bind(this);
 		this.loadMembersFromServer = this.loadMembersFromServer.bind(this);
 		this.loadCreatorFromServer = this.loadCreatorFromServer.bind(this);
-		this.determineUser();
+		this.leaveProject = this.leaveProject.bind(this);
+		this.joinProject = this.joinProject.bind(this);
 	}
-
+/*
 	async determineUser(){
 		var user = AuthRoleValidation.determineUser();
 		var email = user[0].email;
@@ -43,9 +44,14 @@ export default class DifferentProjectPage extends React.Component{
 		this.setState({
 			user_email: email,
 		})
-	}
+	}*/
 
 	async loadDataFromServer(){
+		var email = await AuthRoleValidation.determineUser();
+		console.log(email);
+		this.setState({
+			user_email: email[0].email,
+		})
 		var path = '/api/projects/' + this.state.project_id;
 		var project = await fetch(path, {method: 'GET'})
 			.then(data => data.json())
@@ -73,6 +79,7 @@ export default class DifferentProjectPage extends React.Component{
 		await this.loadDataFromServer();
 		await this.loadMembersFromServer();
 		await this.loadCreatorFromServer();
+		this.determineUser();
 	}
 
 	async componentDidUpdate(prevProps, prevState){
@@ -80,8 +87,6 @@ export default class DifferentProjectPage extends React.Component{
 	}
 
 	async loadMembersFromServer(){
-		var user = AuthRoleValidation.determineUser();
-		var email = user[0].email;
 		var alreadyPresent = false;
 		var path = '/api/projects/' + this.state.project_id + "/members";
 		var members = await fetch(path, {method: 'GET'})
@@ -90,7 +95,7 @@ export default class DifferentProjectPage extends React.Component{
 				var tempArr = []
 				for(var i = 0; i < res.length; i++){
 					tempArr.push(res[i]["User"]);
-					if(res[i]["User"].email == email) alreadyPresent = true;
+					if(res[i]["User"].email == this.state.user_email) alreadyPresent = true;
 				}
 				this.setState({
 					members: tempArr,
@@ -107,6 +112,20 @@ export default class DifferentProjectPage extends React.Component{
 					})
 				}
 			});
+	}
+
+	async leaveProject(){
+		var path = '/api/projects/' + this.state.project_id + '/users/' + this.state.user_email;
+		var leave = await fetch(path, {method: 'DELETE'});
+		this.loadMembersFromServer();
+		this.loadDataFromServer();
+	}
+
+	async joinProject(){
+		var path = '/api/projects/' + this.state.project_id + '/users/' + this.state.user_email;
+		var leave = await fetch(path, {method: 'POST'});
+		this.loadMembersFromServer();
+		this.loadDataFromServer();
 	}
 
 	render() {
@@ -167,14 +186,14 @@ export default class DifferentProjectPage extends React.Component{
 	             	</div> : " "}
 	             {this.state.canJoin == true ?
 	             	<div className="paddedDiv">
-	             		<Button>
+	             		<Button onClick={this.joinProject}>
 	             			Join Project
 	             		</Button>
 	             	</div> : " "}
 
 	             {this.state.canLeave == true ?
 	             	<div className="paddedDiv">
-	             		<Button>
+	             		<Button onClick={this.leaveProject}>
 	             			Leave Project
 	             		</Button>
 	             	</div> : " "}
