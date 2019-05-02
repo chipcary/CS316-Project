@@ -199,11 +199,6 @@ export default class DifferentProjectPage extends React.Component{
 	             {this.state.editable == true ?
 	             	<div>
 	             	<div className="paddedDiv">
-	             		<Button>
-	             			Edit Project
-	             		</Button>
-	             	</div> 
-	             	<div className="paddedDiv">
 	             		<Button onClick={this.deleteProject}>
 	             			Delete Project
 	             		</Button>

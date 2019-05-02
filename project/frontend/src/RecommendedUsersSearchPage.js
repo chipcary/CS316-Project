@@ -149,7 +149,8 @@ export default class RecommendedUsersSearchPage extends React.Component {
 	onFilterValueChange = (e, value, filterType) => {
 		var filters = this.state.filters;
 		if(filterType == 'keyword'){
-			filters[filterType] = value;
+			var valToUse = value.replace(/[^a-z0-9\s-]/ig, "");
+			filters[filterType] = valToUse;
 		}
 		this.setState({ filters: filters, filterChange: true});
 	}
