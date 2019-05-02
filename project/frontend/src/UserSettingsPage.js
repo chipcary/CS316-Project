@@ -112,6 +112,7 @@ export default class UserSettingsPage extends React.Component {
 		var updatedInterest = await fetch(interestPath, { method: 'PUT', headers: { "Content-Type": "application/json" }, body: JSON.stringify(interests)});
 		console.log(newUser);
 		console.log(updatedInterest);
+		console.log('User updated successfully');
 	};
 
 	onChange = e => {
